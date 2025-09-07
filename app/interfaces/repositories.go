@@ -5,6 +5,7 @@ import (
 )
 
 type ProductsRepository interface {
+	GetProductByCode(code string) (*models.Product, error)
 	GetAllProductsWithPagination(
 		category *string,
 		priceLessThen *float64,

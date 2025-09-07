@@ -33,7 +33,8 @@ func main() {
 
 	// Set up routing
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /catalog", cat.HandleGet)
+	mux.HandleFunc("GET /catalog", cat.ListCatalog)
+	mux.HandleFunc("GET /catalog/{code}", cat.GetProductDetails)
 
 	var handler http.Handler = mux
 	handler = middlewares.RecoverPanic(middlewares.LogAccessMiddleware(mux))

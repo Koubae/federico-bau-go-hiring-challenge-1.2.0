@@ -1,12 +1,14 @@
 package repository
 
 import (
+	"errors"
 	"log"
 	"time"
 
 	"github.com/jellydator/ttlcache/v3"
 	"github.com/mytheresa/go-hiring-challenge/app/database"
 	"github.com/mytheresa/go-hiring-challenge/app/models"
+	"gorm.io/gorm"
 )
 
 const (
@@ -29,6 +31,25 @@ func NewProductsRepository(db *database.Client) *SQLProductsRepository {
 		db:    db,
 		cache: cache,
 	}
+}
+
+func (r *SQLProductsRepository) GetProductByCode(code string) (*models.Product, error) {
+	var product models.Product
+
+	dbWithCtx := r.db.DB.Model(&models.Product{})
+
+	if err := dbWithCtx.
+		Preload("Category").
+		Preload("Variants").
+		Where("code = ?", code).
+		First(&product).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+
+	}
+	return &product, nil
 }
 
 func (r *SQLProductsRepository) GetAllProductsWithPagination(
