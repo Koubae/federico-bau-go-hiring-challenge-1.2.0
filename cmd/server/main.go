@@ -12,6 +12,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/mytheresa/go-hiring-challenge/app/catalog"
 	"github.com/mytheresa/go-hiring-challenge/app/container"
+	"github.com/mytheresa/go-hiring-challenge/app/middlewares"
 )
 
 func main() {
@@ -34,11 +35,14 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /catalog", cat.HandleGet)
 
+	var handler http.Handler = mux
+	handler = middlewares.RecoverPanic(middlewares.LogAccessMiddleware(mux))
+
 	// Set up the HTTP server
 	// TODO: better way to handle how we load env variables!"
 	srv := &http.Server{
 		Addr:    fmt.Sprintf("localhost:%s", os.Getenv("HTTP_PORT")),
-		Handler: mux,
+		Handler: handler,
 	}
 
 	// Start the server

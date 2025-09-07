@@ -58,3 +58,4 @@ Federico Bau -- Assignment Results
 * Created `PaginationRequest` struct that validates and loads limit and offset from request
 * Added pagination to handler and repository
 * Fixed Api tests by fixing `OKResponse` and `ErrorResponse`. also added them in Handler
+* Added `RecoverPanic` and `LogAccessMiddleware` middlewares
