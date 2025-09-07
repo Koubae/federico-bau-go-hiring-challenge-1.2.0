@@ -5,5 +5,6 @@ import (
 )
 
 type ProductsRepository interface {
-	GetAllProducts() ([]models.Product, error)
+	GetAllProductsWithPagination(limit int, offset int) ([]models.Product, error)
+	Count() (*int64, error)
 }

@@ -7,7 +7,8 @@ Federico Bau -- Assignment Results
 * **Final Assignment Branch:** https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/federico-bau-assignment
     * [solution/assignment-1-implementation](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1-implementation):
       Main branch with the final assignment implementation implementing what's been requested in [ASSIGNMENT.md](./ASSIGNMENT.md)
-        * [Assignment 1-A Refactor Product Repository #1](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/1)
+        * [1) Assignment 1-A Refactor Product Repository #1](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/1)
+        * [2) Assignment 1-B: Create a Product Category Model #2](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/2)
      
 
 ### 1) Assignment 1-A: Refactor Product Repository  
@@ -30,7 +31,7 @@ Federico Bau -- Assignment Results
 
 ### 2) Assignment 1-B: Create a Product Category Model
 
-* PR: ...
+* PR: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/2
 * Branch: [solution/assignment-1/b-new-product-category-model](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/b-new-product-category-model)
 * Task: Second Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint, new to create new Product Category Model
 
@@ -45,3 +46,16 @@ Federico Bau -- Assignment Results
 * Refactor models into app/models
 * Refactor SQLProductsRepository into repository package
 * Added Category in Product in catalog response
+
+### 3) Assignment 1-C: Add Pagination in Catalog Endpoint
+
+* PR:
+* Branch: solution/assignment-1/c-add-pagination-in-catalog-endpoint
+* Task: Third Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint, Update the catalog handler and relevant repositories to support offset pagination.
+
+#### Change Log
+
+* Created `PaginationRequest` struct that validates and loads limit and offset from request
+* Added pagination to handler and repository
+* Fixed Api tests by fixing `OKResponse` and `ErrorResponse`. also added them in Handler
+* Added `RecoverPanic` and `LogAccessMiddleware` middlewares
