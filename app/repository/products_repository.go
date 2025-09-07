@@ -1,12 +1,14 @@
 package repository
 
 import (
+	"errors"
 	"log"
 	"time"
 
 	"github.com/jellydator/ttlcache/v3"
 	"github.com/mytheresa/go-hiring-challenge/app/database"
 	"github.com/mytheresa/go-hiring-challenge/app/models"
+	"gorm.io/gorm"
 )
 
 const (
@@ -41,7 +43,11 @@ func (r *SQLProductsRepository) GetProductByCode(code string) (*models.Product, 
 		Preload("Variants").
 		Where("code = ?", code).
 		First(&product).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
 		return nil, err
+
 	}
 	return &product, nil
 }

@@ -111,6 +111,10 @@ func (h *CatalogHandler) GetProductDetails(w http.ResponseWriter, r *http.Reques
 		api.ErrorResponse(w, http.StatusInternalServerError, "Unexpected error occurred, please try again later.")
 		return
 	}
+	if res == nil {
+		api.ErrorResponse(w, http.StatusNotFound, "Product not found")
+		return
+	}
 
 	basePrice := res.Price.InexactFloat64()
 	variants := make([]ProductVariant, len(res.Variants))

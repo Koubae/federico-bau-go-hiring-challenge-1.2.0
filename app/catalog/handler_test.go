@@ -588,3 +588,389 @@ func TestCatalogHandler_ListCatalog_PriceFilter(t *testing.T) {
 		},
 	)
 }
+
+func TestCatalogHandler_GetProductDetails(t *testing.T) {
+	// Mock data setup
+	mockProductWithVariants := models.Product{
+		ID:    1,
+		Code:  "PROD001",
+		Price: decimal.NewFromFloat(99.99),
+		Category: models.Category{
+			Code: "CLOTHING",
+			Name: "Clothing",
+		},
+		Variants: []models.Variant{
+			{
+				ID:    1,
+				SKU:   "SKU001A",
+				Name:  "Variant A",
+				Price: decimal.NewFromFloat(89.99),
+			},
+			{
+				ID:    2,
+				SKU:   "SKU001B",
+				Name:  "Variant B",
+				Price: decimal.Zero, // Should inherit base price
+			},
+		},
+	}
+
+	mockProductNoVariants := models.Product{
+		ID:    2,
+		Code:  "PROD002",
+		Price: decimal.NewFromFloat(150.00),
+		Category: models.Category{
+			Code: "SHOES",
+			Name: "Shoes",
+		},
+		Variants: []models.Variant{},
+	}
+
+	tests := []struct {
+		name           string
+		productCode    string
+		repository     *mockProductsRepository
+		expectedStatus int
+		expectedBody   interface{}
+		checkBody      bool
+	}{
+		{
+			name:        "successful get product with variants",
+			productCode: "PROD001",
+			repository: &mockProductsRepository{
+				products: []models.Product{mockProductWithVariants},
+			},
+			expectedStatus: http.StatusOK,
+			expectedBody: GetProductDetailsResponse{
+				ProductWithDetails{
+					ID: 1,
+					Product: Product{
+						Code:  "PROD001",
+						Price: 99.99,
+						Category: Category{
+							Code: "CLOTHING",
+							Name: "Clothing",
+						},
+					},
+					ProductVariant: []ProductVariant{
+						{
+							ID:    1,
+							SKU:   "SKU001A",
+							Name:  "Variant A",
+							Price: 89.99,
+						},
+						{
+							ID:    2,
+							SKU:   "SKU001B",
+							Name:  "Variant B",
+							Price: 99.99, // Inherited from base product
+						},
+					},
+				},
+			},
+			checkBody: true,
+		},
+		{
+			name:        "successful get product without variants",
+			productCode: "PROD002",
+			repository: &mockProductsRepository{
+				products: []models.Product{mockProductNoVariants},
+			},
+			expectedStatus: http.StatusOK,
+			expectedBody: GetProductDetailsResponse{
+				ProductWithDetails{
+					ID: 2,
+					Product: Product{
+						Code:  "PROD002",
+						Price: 150.00,
+						Category: Category{
+							Code: "SHOES",
+							Name: "Shoes",
+						},
+					},
+					ProductVariant: []ProductVariant{},
+				},
+			},
+			checkBody: true,
+		},
+		{
+			name:        "product not found",
+			productCode: "NONEXISTENT",
+			repository: &mockProductsRepository{
+				products: []models.Product{mockProductWithVariants},
+			},
+			expectedStatus: http.StatusNotFound,
+			expectedBody: GetProductDetailsResponse{
+				ProductWithDetails{
+					ID: 0,
+					Product: Product{
+						Code:  "",
+						Price: 0,
+						Category: Category{
+							Code: "",
+							Name: "",
+						},
+					},
+					ProductVariant: []ProductVariant{},
+				},
+			},
+			checkBody: true,
+		},
+		{
+			name:        "repository error",
+			productCode: "PROD001",
+			repository: &mockProductsRepository{
+				getByCodeError: errors.New("database error"),
+			},
+			expectedStatus: http.StatusInternalServerError,
+			checkBody:      false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(
+			tt.name, func(t *testing.T) {
+				handler := NewCatalogHandler(tt.repository)
+				req := httptest.NewRequest("GET", "/catalog/"+tt.productCode, nil)
+				req.SetPathValue("code", tt.productCode)
+				rr := httptest.NewRecorder()
+
+				handler.GetProductDetails(rr, req)
+
+				if rr.Code != tt.expectedStatus {
+					t.Errorf("GetProductDetails() status = %v, want %v", rr.Code, tt.expectedStatus)
+				}
+
+				if tt.checkBody && tt.expectedStatus == http.StatusOK {
+					var response GetProductDetailsResponse
+					err := json.Unmarshal(rr.Body.Bytes(), &response)
+					if err != nil {
+						t.Fatalf("Failed to unmarshal response: %v", err)
+					}
+
+					expectedResponse := tt.expectedBody.(GetProductDetailsResponse)
+					if !reflect.DeepEqual(response, expectedResponse) {
+						t.Errorf("GetProductDetails() response = %v, want %v", response, expectedResponse)
+					}
+				}
+
+				if tt.expectedStatus != http.StatusOK && tt.checkBody == false {
+					var errorResponse map[string]interface{}
+					err := json.Unmarshal(rr.Body.Bytes(), &errorResponse)
+					if err != nil {
+						t.Errorf("Expected JSON error response but got: %s", rr.Body.String())
+					}
+				}
+			},
+		)
+	}
+}
+
+func TestCatalogHandler_GetProductDetails_Integration(t *testing.T) {
+	mockProduct := models.Product{
+		ID:    1,
+		Code:  "INTEGRATION001",
+		Price: decimal.NewFromFloat(199.99),
+		Category: models.Category{
+			Code: "INTEGRATION",
+			Name: "Integration Test Category",
+		},
+		Variants: []models.Variant{
+			{
+				ID:    10,
+				SKU:   "INT001A",
+				Name:  "Integration Variant A",
+				Price: decimal.NewFromFloat(179.99),
+			},
+			{
+				ID:    11,
+				SKU:   "INT001B",
+				Name:  "Integration Variant B",
+				Price: decimal.Zero, // Should inherit base price
+			},
+		},
+	}
+
+	mockRepo := &mockProductsRepository{
+		products: []models.Product{mockProduct},
+	}
+
+	handler := NewCatalogHandler(mockRepo)
+
+	t.Run(
+		"correct content type", func(t *testing.T) {
+			req := httptest.NewRequest("GET", "/catalog/INTEGRATION001", nil)
+			req.SetPathValue("code", "INTEGRATION001")
+			rr := httptest.NewRecorder()
+
+			handler.GetProductDetails(rr, req)
+
+			contentType := rr.Header().Get("Content-Type")
+			if contentType != "application/json" {
+				t.Errorf("Expected Content-Type application/json, got %s", contentType)
+			}
+		},
+	)
+
+	t.Run(
+		"response structure validation", func(t *testing.T) {
+			req := httptest.NewRequest("GET", "/catalog/INTEGRATION001", nil)
+			req.SetPathValue("code", "INTEGRATION001")
+			rr := httptest.NewRecorder()
+
+			handler.GetProductDetails(rr, req)
+
+			if rr.Code != http.StatusOK {
+				t.Fatalf("Expected status 200, got %d", rr.Code)
+			}
+
+			var response GetProductDetailsResponse
+			err := json.Unmarshal(rr.Body.Bytes(), &response)
+			if err != nil {
+				t.Fatalf("Failed to unmarshal response: %v", err)
+			}
+
+			// Validate product details
+			if response.ID != 1 {
+				t.Errorf("Expected product ID 1, got %d", response.ID)
+			}
+
+			if response.Code != "INTEGRATION001" {
+				t.Errorf("Expected product code INTEGRATION001, got %s", response.Code)
+			}
+
+			if response.Price != 199.99 {
+				t.Errorf("Expected product price 199.99, got %f", response.Price)
+			}
+
+			if response.Category.Code != "INTEGRATION" {
+				t.Errorf("Expected category code INTEGRATION, got %s", response.Category.Code)
+			}
+
+			if response.Category.Name != "Integration Test Category" {
+				t.Errorf("Expected category name 'Integration Test Category', got %s", response.Category.Name)
+			}
+
+			// Validate variants
+			if len(response.ProductVariant) != 2 {
+				t.Errorf("Expected 2 variants, got %d", len(response.ProductVariant))
+			}
+
+			// First variant should have its own price
+			variant1 := response.ProductVariant[0]
+			if variant1.ID != 10 {
+				t.Errorf("Expected variant ID 10, got %d", variant1.ID)
+			}
+			if variant1.SKU != "INT001A" {
+				t.Errorf("Expected variant SKU INT001A, got %s", variant1.SKU)
+			}
+			if variant1.Name != "Integration Variant A" {
+				t.Errorf("Expected variant name 'Integration Variant A', got %s", variant1.Name)
+			}
+			if variant1.Price != 179.99 {
+				t.Errorf("Expected variant price 179.99, got %f", variant1.Price)
+			}
+
+			// Second variant should inherit base price
+			variant2 := response.ProductVariant[1]
+			if variant2.ID != 11 {
+				t.Errorf("Expected variant ID 11, got %d", variant2.ID)
+			}
+			if variant2.SKU != "INT001B" {
+				t.Errorf("Expected variant SKU INT001B, got %s", variant2.SKU)
+			}
+			if variant2.Name != "Integration Variant B" {
+				t.Errorf("Expected variant name 'Integration Variant B', got %s", variant2.Name)
+			}
+			if variant2.Price != 199.99 {
+				t.Errorf("Expected variant price 199.99 (inherited from base), got %f", variant2.Price)
+			}
+		},
+	)
+}
+
+func TestCatalogHandler_GetProductDetails_PriceInheritance(t *testing.T) {
+	tests := []struct {
+		name          string
+		basePrice     float64
+		variantPrice  float64
+		expectedPrice float64
+		description   string
+	}{
+		{
+			name:          "variant with zero price inherits base price",
+			basePrice:     100.00,
+			variantPrice:  0.00,
+			expectedPrice: 100.00,
+			description:   "When variant price is zero, it should inherit the base product price",
+		},
+		{
+			name:          "variant with specific price keeps its own price",
+			basePrice:     100.00,
+			variantPrice:  75.50,
+			expectedPrice: 75.50,
+			description:   "When variant has its own price, it should keep that price",
+		},
+		{
+			name:          "variant price can be higher than base price",
+			basePrice:     50.00,
+			variantPrice:  150.00,
+			expectedPrice: 150.00,
+			description:   "Variant price can be higher than base price",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(
+			tt.name, func(t *testing.T) {
+				mockProduct := models.Product{
+					ID:    1,
+					Code:  "PRICE_TEST",
+					Price: decimal.NewFromFloat(tt.basePrice),
+					Category: models.Category{
+						Code: "TEST",
+						Name: "Test Category",
+					},
+					Variants: []models.Variant{
+						{
+							ID:    1,
+							SKU:   "TEST_SKU",
+							Name:  "Test Variant",
+							Price: decimal.NewFromFloat(tt.variantPrice),
+						},
+					},
+				}
+
+				mockRepo := &mockProductsRepository{
+					products: []models.Product{mockProduct},
+				}
+
+				handler := NewCatalogHandler(mockRepo)
+				req := httptest.NewRequest("GET", "/catalog/PRICE_TEST", nil)
+				req.SetPathValue("code", "PRICE_TEST")
+				rr := httptest.NewRecorder()
+
+				handler.GetProductDetails(rr, req)
+
+				if rr.Code != http.StatusOK {
+					t.Fatalf("Expected status 200, got %d", rr.Code)
+				}
+
+				var response GetProductDetailsResponse
+				err := json.Unmarshal(rr.Body.Bytes(), &response)
+				if err != nil {
+					t.Fatalf("Failed to unmarshal response: %v", err)
+				}
+
+				if len(response.ProductVariant) != 1 {
+					t.Fatalf("Expected 1 variant, got %d", len(response.ProductVariant))
+				}
+
+				actualPrice := response.ProductVariant[0].Price
+				if actualPrice != tt.expectedPrice {
+					t.Errorf("%s: Expected variant price %f, got %f", tt.description, tt.expectedPrice, actualPrice)
+				}
+			},
+		)
+	}
+}
