@@ -11,7 +11,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/mytheresa/go-hiring-challenge/app/catalog"
-	"github.com/mytheresa/go-hiring-challenge/app/database"
+	"github.com/mytheresa/go-hiring-challenge/app/container"
 	"github.com/mytheresa/go-hiring-challenge/models"
 )
 
@@ -25,15 +25,11 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	// Initialize database connection
-	db, err := database.New()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Shutdown()
+	container.CreateDIContainer()
+	defer container.ShutDown()
 
 	// Initialize handlers
-	prodRepo := models.NewProductsRepository(db.DB)
+	prodRepo := models.NewProductsRepository(container.Container.DB.DB) // TODO
 	cat := catalog.NewCatalogHandler(prodRepo)
 
 	// Set up routing
