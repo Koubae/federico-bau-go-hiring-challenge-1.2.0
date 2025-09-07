@@ -42,7 +42,7 @@ func RecoverPanic(next http.Handler) http.Handler {
 				if err := recover(); err != nil {
 					w.Header().Set("Connection", "close")
 
-					log.Printf("Internal Server Error, Application recovered", "error", err)
+					log.Printf("Internal Server Error, Application recovered, eror: %s", err)
 					http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 				}
 			}()
