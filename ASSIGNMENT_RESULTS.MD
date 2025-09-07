@@ -36,4 +36,9 @@ Federico Bau -- Assignment Results
 
 #### Change Log
 
-* ...
+* Change multiple aspects of the database "seed" and migration. Most likely, there should be in place a proper migration tool.
+  If creating SQL file is a requirements it could be done in 2 steps where it automatically loads the curren
+  DDL schema by the GORM models (without write them manually especially becase ORM and query will have discrepancies)
+  For now what this does is: 1) Drop all models 2) Create All models 3) Load the seed data. So we let GORM's ORM do its job
+
+* Now [sql](./sql) folder contains only SEED / Test data, but wont' create nor delete tables.
