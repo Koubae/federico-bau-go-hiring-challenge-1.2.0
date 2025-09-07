@@ -41,8 +41,6 @@ export PATH=$PATH:$GOROOT/bin
 
 ### Run the application
 
-
-
 ```bash
 make tidy
 # Create Database
@@ -56,6 +54,8 @@ make run
 ### Other commands
 
 ```bash
+# update .env file
+make update-env-file
 
 ```
 
