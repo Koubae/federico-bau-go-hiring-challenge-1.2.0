@@ -5,7 +5,11 @@ This repository contains a Go application for managing products and their prices
 * Repository: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0
 * **Final Assignment Branch:** https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/federico-bau-assignment
 * Author: [Federico Bau](https://federicobau.dev/)
-* SEE 🚨🚨🚨 **[ASSIGNMENT_RESULTS.MD](./ASSIGNMENT_RESULTS.MD)** 🚨🚨🚨
+
+### See  Please SEE 🚨🚨🚨
+
+* **[ASSIGNMENT_RESULTS.MD](./dev/ASSIGNMENT_RESULTS.MD)** 
+* [PostMan Collection](./dev/mytheresa_(Products)_V001.postman_collection.json)
 
 
 ### QuickStart
@@ -40,6 +44,10 @@ make run
 
 * Catalog List: http://localhost:8484/catalog?category=Accessories&priceLessThen=10&limit=100&offset=0
 * Product Details: http://localhost:8484/catalog/PROD007
+
+I suggest you to use [PostMan Collection](./dev/mytheresa_(Products)_V001.postman_collection.json)
+
+----
 
 ## Project Structure
 

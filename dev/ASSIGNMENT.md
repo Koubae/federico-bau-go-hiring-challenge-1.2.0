@@ -1,6 +1,6 @@
 # Instructions
 
-Once we make sure we get all the requirements from [README.md](README.md), we will proceed to code implementation. The main objective is to keep code implementation as simple as possible, while ensuring we follow best practices and maintainability.
+Once we make sure we get all the requirements from [README.md](../README.md), we will proceed to code implementation. The main objective is to keep code implementation as simple as possible, while ensuring we follow best practices and maintainability.
 
 Writing Idiomatic Go code is crucial, so we will focus on clarity and simplicity.
 

@@ -17,7 +17,7 @@ Federico Bau -- Assignment Results
 
 * PR: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/1
 * Branch: [solution/assignment-1/a-refactor-product-repository](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/a-refactor-product-repository)
-* Task: First Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint
+* Task: First Task of [ASSIGNMENT.md](ASSIGNMENT.md)'s Catalog endpoint
 
 #### Change Log
 
@@ -35,7 +35,7 @@ Federico Bau -- Assignment Results
 
 * PR: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/2
 * Branch: [solution/assignment-1/b-new-product-category-model](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/b-new-product-category-model)
-* Task: Second Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint, new to create new Product Category Model
+* Task: Second Task of [ASSIGNMENT.md](ASSIGNMENT.md)'s Catalog endpoint, new to create new Product Category Model
 
 #### Change Log
 
@@ -44,7 +44,7 @@ Federico Bau -- Assignment Results
   DDL schema by the GORM models (without write them manually especially becase ORM and query will have discrepancies)
   For now what this does is: 1) Drop all models 2) Create All models 3) Load the seed data. So we let GORM's ORM do its job
 
-* Now [sql](./sql) folder contains only SEED / Test data, but wont' create nor delete tables.
+* Now [sql](../sql) folder contains only SEED / Test data, but wont' create nor delete tables.
 * Refactor models into app/models
 * Refactor SQLProductsRepository into repository package
 * Added Category in Product in catalog response
@@ -53,7 +53,7 @@ Federico Bau -- Assignment Results
 
 * PR: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/3
 * Branch:  [solution/assignment-1/c-add-pagination-in-catalog-endpoint](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/c-add-pagination-in-catalog-endpoint)
-* Task: Third Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint, Update the catalog handler and relevant repositories to support offset pagination.
+* Task: Third Task of [ASSIGNMENT.md](ASSIGNMENT.md)'s Catalog endpoint, Update the catalog handler and relevant repositories to support offset pagination.
 
 #### Change Log
 
@@ -66,7 +66,7 @@ Federico Bau -- Assignment Results
 
 * PR: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/4
 * Branch: [solution/assignment-1/d-catalog-endpoint-query-by-category-and-price](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/d-catalog-endpoint-query-by-category-and-price)
-* Task: Fourth Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint, Catalog Endpoint query by category and price
+* Task: Fourth Task of [ASSIGNMENT.md](ASSIGNMENT.md)'s Catalog endpoint, Catalog Endpoint query by category and price
 
 #### Change Log
 
@@ -77,7 +77,7 @@ Federico Bau -- Assignment Results
 
 * PR: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/5
 * Branch: [solution/assignment-1/e-product-detail-endpoint](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/e-product-detail-endpoint)
-* Task: Fifth Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Product details endpoint
+* Task: Fifth Task of [ASSIGNMENT.md](ASSIGNMENT.md)'s Product details endpoint
 
 #### Change Log
 
@@ -143,7 +143,7 @@ Response:
 
 * PR: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/6
 * Branch: [solution/assignment-1/f-category-crud](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/f-category-crud)
-* Task: Sixth Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Categories endpoint CRUD
+* Task: Sixth Task of [ASSIGNMENT.md](ASSIGNMENT.md)'s Categories endpoint CRUD
 
 #### Change Log
 
