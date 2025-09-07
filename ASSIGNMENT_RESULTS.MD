@@ -62,8 +62,8 @@ Federico Bau -- Assignment Results
 
 ### 3) Assignment 1-D: Catalog Endpoint query by category and price
 
-* PR: 
-* Branch: solution/assignment-1/d-catalog-endpoint-query-by-category-and-price
+* PR: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/4
+* Branch: [solution/assignment-1/d-catalog-endpoint-query-by-category-and-price](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/d-catalog-endpoint-query-by-category-and-price)
 * Task: Fourth Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint, Catalog Endpoint query by category and price
 
 #### Change Log
