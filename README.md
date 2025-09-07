@@ -19,6 +19,14 @@ This repository contains a Go application for managing products and their prices
 make quickstart
 ```
 
+**IMPORTANT 🚨🚨🚨**
+If you have an issue running the docker-compose App try using go locally
+
+```bash
+make quickstart-local
+```
+
+
 #### Try the API
 
 * Catalog List: http://localhost:8484/catalog?category=Accessories&priceLessThen=10&limit=100&offset=0

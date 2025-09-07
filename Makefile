@@ -1,7 +1,10 @@
 # --------------------------
 # Env Management
 # --------------------------
-quickstart: update-env-file tidy docker-up sleep seed run
+# Uses Docker
+quickstart: update-env-file tidy db-docker-up sleep seed product-api-docker-up
+# Uses Local GO
+quickstart-local: update-env-file tidy db-docker-up sleep seed run
 
 tidy ::
 	@go mod tidy && go mod vendor
@@ -23,16 +26,33 @@ run ::
 run-reload:
 	@air -c .air.server-reloader.toml
 
+product-api-docker-up ::
+	docker compose up product-api
 
-test ::
-	@go test -v -count=1 -race ./... -coverprofile=coverage.out -covermode=atomic
+product-api-docker-down ::
+	docker compose down product-api
 
-docker-up ::
-	docker compose up -d
+product-api-docker-build:
+	@echo 'Building images ...🛠️'
+	@docker compose build product-api
 
-docker-down ::
+db-docker-up ::
+	docker compose up -d db-postgres
+
+db-docker-down ::
+	docker compose down db-postgres
+
+docker-stop:
 	docker compose down
 
+docker-cleanup:
+	docker compose down --remove-orphans
 
 sleep:
 	sleep 5
+
+# --------------------------
+# Test
+# --------------------------
+test ::
+	@go test -v -count=1 -race ./... -coverprofile=coverage.out -covermode=atomic
