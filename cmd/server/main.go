@@ -26,16 +26,19 @@ func main() {
 	defer stop()
 
 	// Initialize database connection
-	db, close := database.New(
+	db, err := database.New(
 		os.Getenv("POSTGRES_USER"),
 		os.Getenv("POSTGRES_PASSWORD"),
 		os.Getenv("POSTGRES_DB"),
 		os.Getenv("POSTGRES_PORT"),
 	)
-	defer close()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Shutdown()
 
 	// Initialize handlers
-	prodRepo := models.NewProductsRepository(db)
+	prodRepo := models.NewProductsRepository(db.DB)
 	cat := catalog.NewCatalogHandler(prodRepo)
 
 	// Set up routing
