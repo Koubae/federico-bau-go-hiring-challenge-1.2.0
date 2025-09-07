@@ -34,6 +34,7 @@ func main() {
 
 	categoryHandler := category.NewCategoryHandler(container.Container.CategoryRepository)
 	mux.HandleFunc("GET /categories", categoryHandler.ListCategories)
+	mux.HandleFunc("POST /categories", categoryHandler.CreateCategory)
 
 	catalogHandler := catalog.NewCatalogHandler(container.Container.ProductRepository)
 	mux.HandleFunc("GET /catalog", catalogHandler.ListCatalog)

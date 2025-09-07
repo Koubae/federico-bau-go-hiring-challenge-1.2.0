@@ -8,6 +8,7 @@ import (
 	"github.com/mytheresa/go-hiring-challenge/app/database"
 	"github.com/mytheresa/go-hiring-challenge/app/dto"
 	"github.com/mytheresa/go-hiring-challenge/app/models"
+	"gorm.io/gorm"
 )
 
 type SQLCategoryRepository struct {
@@ -40,6 +41,23 @@ func (r *SQLCategoryRepository) Create(data dto.Category) (*models.Category, err
 
 	log.Printf("New Category created: %v+\n", category)
 	return category, nil
+
+}
+
+func (r *SQLCategoryRepository) GetByCode(code string) (*models.Category, error) {
+	var category models.Category
+
+	dbWithCtx := r.db.DB.Model(&models.Category{})
+	if err := dbWithCtx.
+		Where("code = ?", code).
+		First(&category).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, errors.New("error while Get Category By Code")
+
+	}
+	return &category, nil
 
 }
 

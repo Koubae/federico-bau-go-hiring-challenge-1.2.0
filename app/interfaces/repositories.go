@@ -21,6 +21,7 @@ type ProductsRepository interface {
 
 type CategoriesRepository interface {
 	Create(data dto.Category) (*models.Category, error)
+	GetByCode(code string) (*models.Category, error)
 	GetAll(limit int, offset int) ([]models.Category, error)
 	Count() (*int64, error)
 }

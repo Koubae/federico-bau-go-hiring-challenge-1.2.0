@@ -147,6 +147,7 @@ Response:
 
 * Moved structured used by handlers into `dto` package
 * Implemented List Category Endpoint
+* Implemented Create Category Endpoint
 
 
 #### List categories
@@ -178,3 +179,31 @@ Response:
     ]
 }
 ```
+
+#### Craete Category
+
+Request:
+```bash
+curl --location 'http://localhost:8484/categories' \
+--header 'Content-Type: application/json' \
+--data '{
+    "code": "HATS_BASEBALL",
+    "name": "Baseball Hats"
+}'
+```
+
+Response: (creates new) Status 201
+```json
+{
+    "id": 14,
+    "code": "HATS_BASEBALL",
+    "name": "Baseball Hats"
+}
+```
+Response (already created) Status 409
+
+```json
+{
+    "error": "Category already exists"
+}
+``` 
