@@ -43,3 +43,4 @@ Federico Bau -- Assignment Results
 
 * Now [sql](./sql) folder contains only SEED / Test data, but wont' create nor delete tables.
 * Refactor models into app/models
+* Refactor SQLProductsRepository into repository package
