@@ -8,9 +8,14 @@ import (
 	"strings"
 
 	"github.com/joho/godotenv"
+	"github.com/mytheresa/go-hiring-challenge/app/models"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 
 	"github.com/mytheresa/go-hiring-challenge/app/database"
 )
+
+const DryRun = false
 
 func main() {
 	// Load environment variables from .env file
@@ -18,14 +23,19 @@ func main() {
 		log.Fatalf("Error loading .env file: %s", err)
 	}
 
-	// Initialize database connection
-	db, close := database.New(
-		os.Getenv("POSTGRES_USER"),
-		os.Getenv("POSTGRES_PASSWORD"),
-		os.Getenv("POSTGRES_DB"),
-		os.Getenv("POSTGRES_PORT"),
+	db, err := database.New(false)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Shutdown()
+
+	session := db.DB.Session(
+		&gorm.Session{
+			DryRun:      DryRun,
+			Logger:      logger.Default.LogMode(db.Config.LogLevel),
+			PrepareStmt: false,
+		},
 	)
-	defer close()
 
 	dir := os.Getenv("POSTGRES_SQL_DIR")
 	files, err := os.ReadDir(dir)
@@ -33,6 +43,20 @@ func main() {
 		log.Fatalf("reading directory failed: %v", err)
 	}
 
+	// DROP ALL TABLES
+	log.Println("Dropping all tables")
+	if err := session.Migrator().DropTable(&models.Category{}, &models.Product{}, &models.Variant{}); err != nil {
+		panic(err)
+	}
+	log.Println("All database tables dropped successfully!")
+
+	log.Println("Creating all tables")
+	if err := session.AutoMigrate(&models.Category{}, &models.Product{}, &models.Variant{}); err != nil {
+		panic(err)
+	}
+	log.Println("All database tables created successfully!")
+
+	log.Println("Seeding database with test data")
 	// Filter and sort .sql files
 	var sqlFiles []os.DirEntry
 	for _, file := range files {
@@ -40,9 +64,11 @@ func main() {
 			sqlFiles = append(sqlFiles, file)
 		}
 	}
-	sort.Slice(sqlFiles, func(i, j int) bool {
-		return sqlFiles[i].Name() < sqlFiles[j].Name()
-	})
+	sort.Slice(
+		sqlFiles, func(i, j int) bool {
+			return sqlFiles[i].Name() < sqlFiles[j].Name()
+		},
+	)
 
 	for _, file := range sqlFiles {
 		path := filepath.Join(dir, file.Name())
@@ -53,7 +79,7 @@ func main() {
 		}
 
 		sql := string(content)
-		if err := db.Exec(sql).Error; err != nil {
+		if err := session.Exec(sql).Error; err != nil {
 			log.Printf("executing %s failed: %v", file.Name(), err)
 			return
 		}

@@ -1,7 +1,8 @@
-package models
+package repository
 
 import (
 	"github.com/mytheresa/go-hiring-challenge/app/database"
+	"github.com/mytheresa/go-hiring-challenge/app/models"
 )
 
 type SQLProductsRepository struct {
@@ -14,9 +15,9 @@ func NewProductsRepository(db *database.Client) *SQLProductsRepository {
 	}
 }
 
-func (r *SQLProductsRepository) GetAllProducts() ([]Product, error) {
-	var products []Product
-	if err := r.db.DB.Preload("Variants").Find(&products).Error; err != nil {
+func (r *SQLProductsRepository) GetAllProducts() ([]models.Product, error) {
+	var products []models.Product
+	if err := r.db.DB.Preload("Category").Preload("Variants").Find(&products).Error; err != nil {
 		return nil, err
 	}
 	return products, nil
