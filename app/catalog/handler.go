@@ -1,7 +1,6 @@
 package catalog
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/mytheresa/go-hiring-challenge/app/api"
@@ -36,13 +35,13 @@ func NewCatalogHandler(r interfaces.ProductsRepository) *CatalogHandler {
 func (h *CatalogHandler) HandleGet(w http.ResponseWriter, r *http.Request) {
 	pagination, err := api.PaginationRequest(r)
 	if err != nil {
-		http.Error(w, "Pagination Validation failure, error: "+err.Error(), http.StatusBadRequest)
+		api.ErrorResponse(w, http.StatusBadRequest, "Pagination validation failure: "+err.Error())
 		return
 	}
 
 	res, err := h.repository.GetAllProducts(pagination.Limit, pagination.Offset)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		api.ErrorResponse(w, http.StatusInternalServerError, "Unexpected error occurred, please try again later.")
 		return
 	}
 
@@ -59,15 +58,9 @@ func (h *CatalogHandler) HandleGet(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Return the products as a JSON response
-	w.Header().Set("Content-Type", "application/json")
-
 	response := Response{
 		Products: products,
 	}
+	api.OKResponse(w, response)
 
-	if err := json.NewEncoder(w).Encode(response); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
 }
