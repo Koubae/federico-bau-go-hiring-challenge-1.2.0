@@ -7,6 +7,10 @@ seed ::
 run ::
 	@go run cmd/server/main.go
 
+run-reload:
+	@air -c .air.server-reloader.toml
+
+
 test ::
 	@go test -v -count=1 -race ./... -coverprofile=coverage.out -covermode=atomic
 

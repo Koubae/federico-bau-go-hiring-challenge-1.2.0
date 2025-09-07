@@ -14,6 +14,35 @@ This repository contains a Go application for managing products and their prices
     * [solution/assignment-1/a-refactor-product-repository](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/a-refactor-product-repository)
       First Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint
 
+### QuickStart
+
+#### Hot-Reloader: [Air](https://github.com/air-verse/air) 
+
+* 1) Install [air-verse/air](https://github.com/air-verse/air) globally
+
+```bash
+go install github.com/air-verse/air@latest
+
+# Make sure that GOPATH and GOROOT is in your PATH
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin
+```
+
+#### Run the application 
+
+
+```bash
+make tidy
+# Create Database
+make seed 
+# Run Server (Hot-Reloader)
+make run-reload
+# Run Server (No Hot-Reloader)
+make run
+```
+
+
 
 ## Project Structure
 
