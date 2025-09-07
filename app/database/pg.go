@@ -12,7 +12,7 @@ import (
 
 var client *Client
 
-func New() (*Client, error) {
+func New(prepareStmt bool) (*Client, error) {
 	var err error
 	var db *gorm.DB
 	var config *DatabaseConfig
@@ -22,7 +22,7 @@ func New() (*Client, error) {
 	db, err = gorm.Open(
 		postgres.Open(config.Dns()), &gorm.Config{
 			Logger:      logger.Default.LogMode(config.LogLevel),
-			PrepareStmt: true,
+			PrepareStmt: prepareStmt,
 		},
 	)
 	if err != nil {

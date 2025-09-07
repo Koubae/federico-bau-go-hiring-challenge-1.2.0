@@ -20,7 +20,7 @@ func CreateDIContainer() {
 		return
 	}
 
-	db, err := database.New()
+	db, err := database.New(true)
 	if err != nil {
 		log.Fatal(err)
 	}
