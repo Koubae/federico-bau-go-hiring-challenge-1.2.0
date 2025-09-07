@@ -46,7 +46,7 @@ func RunServer() {
 	// Set up the HTTP server
 	// TODO: better way to handle how we load env variables!"
 	srv := &http.Server{
-		Addr:    fmt.Sprintf("localhost:%s", os.Getenv("HTTP_PORT")),
+		Addr:    fmt.Sprintf("%s:%s", os.Getenv("HTTP_HOST"), os.Getenv("HTTP_PORT")),
 		Handler: handler,
 	}
 
@@ -62,6 +62,10 @@ func RunServer() {
 
 	<-ctx.Done()
 	log.Println("Shutting down server...")
-	srv.Shutdown(ctx)
+	err := srv.Shutdown(ctx)
+	if err != nil {
+		log.Fatalf("Error while shutting down server: %v", err)
+		return
+	}
 	stop()
 }
