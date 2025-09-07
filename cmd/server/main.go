@@ -26,12 +26,7 @@ func main() {
 	defer stop()
 
 	// Initialize database connection
-	db, err := database.New(
-		os.Getenv("POSTGRES_USER"),
-		os.Getenv("POSTGRES_PASSWORD"),
-		os.Getenv("POSTGRES_DB"),
-		os.Getenv("POSTGRES_PORT"),
-	)
+	db, err := database.New()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -46,6 +41,7 @@ func main() {
 	mux.HandleFunc("GET /catalog", cat.HandleGet)
 
 	// Set up the HTTP server
+	// TODO: better way to handle how we load env variables!"
 	srv := &http.Server{
 		Addr:    fmt.Sprintf("localhost:%s", os.Getenv("HTTP_PORT")),
 		Handler: mux,

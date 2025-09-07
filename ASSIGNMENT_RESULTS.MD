@@ -15,3 +15,5 @@ First Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint
 
 * Added `.gitattribute ` to fix EOF
 * Created a new Gorm Client wrapper as a struct, defining common methods such as shutdown
+* Added `POSTGRES_HOST` + `POSTGRES_SSL_MODE` to env variables!
+* Modified how we load env variables For the database connection, using a `DatabaseConfig` struct 

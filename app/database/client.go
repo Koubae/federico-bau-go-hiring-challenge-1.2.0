@@ -9,11 +9,12 @@ import (
 )
 
 type Client struct {
-	DB *gorm.DB
+	Config *DatabaseConfig
+	DB     *gorm.DB
 }
 
 func (c *Client) String() string {
-	return fmt.Sprintf("Client{config: %v}", "c.Config.DBName")
+	return fmt.Sprintf("PostgreSQL -- %v", c.Config)
 }
 
 func (c *Client) GetConnection() *sql.DB {

@@ -2,7 +2,6 @@ package database
 
 import (
 	"errors"
-	"fmt"
 	"log"
 
 	_ "github.com/lib/pq"
@@ -13,16 +12,15 @@ import (
 
 var client *Client
 
-func New(user, password, dbname, port string) (*Client, error) {
+func New() (*Client, error) {
 	var err error
 	var db *gorm.DB
+	var config *DatabaseConfig
 
-	// TODO : config
-	// TODO : host!
-	dsn := fmt.Sprintf("postgres://%s:%s@localhost:%s/%s?sslmode=disable", user, password, port, dbname)
+	config = NewDatabaseConfig()
 
 	db, err = gorm.Open(
-		postgres.Open(dsn), &gorm.Config{
+		postgres.Open(config.Dns()), &gorm.Config{
 			Logger:      logger.Default.LogMode(logger.Info),
 			PrepareStmt: true,
 		},
@@ -37,11 +35,12 @@ func New(user, password, dbname, port string) (*Client, error) {
 	}
 
 	client = &Client{
-		DB: db,
+		Config: config,
+		DB:     db,
 	}
 	client.Ping()
 
-	log.Println("PostgreSQL database connected")
+	log.Printf("Database connected 🌐🛜✅ %v\n", client)
 	return client, nil
 }
 
