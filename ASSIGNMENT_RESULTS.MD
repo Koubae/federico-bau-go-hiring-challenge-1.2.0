@@ -49,8 +49,8 @@ Federico Bau -- Assignment Results
 
 ### 3) Assignment 1-C: Add Pagination in Catalog Endpoint
 
-* PR:
-* Branch: solution/assignment-1/c-add-pagination-in-catalog-endpoint
+* PR: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/3
+* Branch:  [solution/assignment-1/c-add-pagination-in-catalog-endpoint](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/c-add-pagination-in-catalog-endpoint)
 * Task: Third Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint, Update the catalog handler and relevant repositories to support offset pagination.
 
 #### Change Log
@@ -59,3 +59,15 @@ Federico Bau -- Assignment Results
 * Added pagination to handler and repository
 * Fixed Api tests by fixing `OKResponse` and `ErrorResponse`. also added them in Handler
 * Added `RecoverPanic` and `LogAccessMiddleware` middlewares
+
+### 3) Assignment 1-D: Catalog Endpoint query by category and price
+
+* PR: 
+* Branch: solution/assignment-1/d-catalog-endpoint-query-by-category-and-price
+* Task: Fourth Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint, Catalog Endpoint query by category and price
+
+#### Change Log
+
+* Added category and price query to handler and repository
+
+

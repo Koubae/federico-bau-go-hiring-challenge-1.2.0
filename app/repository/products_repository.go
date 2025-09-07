@@ -31,9 +31,24 @@ func NewProductsRepository(db *database.Client) *SQLProductsRepository {
 	}
 }
 
-func (r *SQLProductsRepository) GetAllProductsWithPagination(limit int, offset int) ([]models.Product, error) {
+func (r *SQLProductsRepository) GetAllProductsWithPagination(
+	category *string,
+	priceLessThen *float64,
+	limit int,
+	offset int,
+) ([]models.Product, error) {
 	var products []models.Product
-	if err := r.db.DB.
+
+	dbWithCtx := r.db.DB.Model(&models.Product{})
+
+	if category != nil && *category != "" {
+		dbWithCtx = dbWithCtx.Joins("Category").Where("\"Category\".name = ?", *category)
+	}
+	if priceLessThen != nil {
+		dbWithCtx = dbWithCtx.Where("price <= ?", *priceLessThen)
+	}
+
+	if err := dbWithCtx.
 		Preload("Category").
 		Preload("Variants").
 		Order("id ASC").
