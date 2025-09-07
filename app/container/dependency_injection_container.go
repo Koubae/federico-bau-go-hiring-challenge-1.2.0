@@ -2,11 +2,15 @@ package container
 
 import (
 	"github.com/mytheresa/go-hiring-challenge/app/database"
+	"github.com/mytheresa/go-hiring-challenge/app/interfaces"
+	"github.com/mytheresa/go-hiring-challenge/models"
+
 	"log"
 )
 
 type DependencyInjectionContainer struct {
-	DB *database.Client
+	DB                *database.Client
+	ProductRepository interfaces.ProductsRepository
 }
 
 var Container *DependencyInjectionContainer
@@ -21,8 +25,11 @@ func CreateDIContainer() {
 		log.Fatal(err)
 	}
 
+	productsRepository := models.NewProductsRepository(db)
+
 	Container = &DependencyInjectionContainer{
-		DB: db,
+		DB:                db,
+		ProductRepository: productsRepository,
 	}
 }
 

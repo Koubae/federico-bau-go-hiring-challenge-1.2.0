@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/mytheresa/go-hiring-challenge/models"
+	"github.com/mytheresa/go-hiring-challenge/app/interfaces"
 )
 
 type Response struct {
@@ -17,17 +17,17 @@ type Product struct {
 }
 
 type CatalogHandler struct {
-	repo *models.ProductsRepository
+	repository interfaces.ProductsRepository
 }
 
-func NewCatalogHandler(r *models.ProductsRepository) *CatalogHandler {
+func NewCatalogHandler(r interfaces.ProductsRepository) *CatalogHandler {
 	return &CatalogHandler{
-		repo: r,
+		repository: r,
 	}
 }
 
 func (h *CatalogHandler) HandleGet(w http.ResponseWriter, r *http.Request) {
-	res, err := h.repo.GetAllProducts()
+	res, err := h.repository.GetAllProducts()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

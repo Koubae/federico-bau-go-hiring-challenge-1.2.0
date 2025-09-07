@@ -19,4 +19,6 @@ First Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint
 * Modified how we load env variables For the database connection, using a `DatabaseConfig` struct 
 * Created `DependencyInjectionContainer` which is responsible to create, provide and cleanup applications' resources
   such as database connection. Now `DependencyInjectionContainer` creates the postgres client and the database connection.
-* `ProductsRepository` now uses the `database.Client` struct rather than gorm directly.
+* Created `ProductsRepository` as interface and renamed concrete implementation to `SQLProductsRepository`
+* `CatalogHandler` now depends on the `ProductsRepository` interface
+* `SQLProductsRepository` now uses the `database.Client` struct rather than gorm directly.
