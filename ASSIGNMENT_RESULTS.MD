@@ -73,8 +73,8 @@ Federico Bau -- Assignment Results
 
 ### 5) Assignment 1-E: Product details endpoint
 
-* PR: 
-* Branch: [solution/assignment-1/e-product-detail-endpoint]()
+* PR: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/5
+* Branch: [solution/assignment-1/e-product-detail-endpoint](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/e-product-detail-endpoint)
 * Task: Fourth Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Product details endpoint
 
 #### Change Log
