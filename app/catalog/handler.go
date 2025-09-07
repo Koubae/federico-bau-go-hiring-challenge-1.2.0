@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/mytheresa/go-hiring-challenge/app/api"
 	"github.com/mytheresa/go-hiring-challenge/app/interfaces"
 )
 
@@ -33,7 +34,13 @@ func NewCatalogHandler(r interfaces.ProductsRepository) *CatalogHandler {
 }
 
 func (h *CatalogHandler) HandleGet(w http.ResponseWriter, r *http.Request) {
-	res, err := h.repository.GetAllProducts()
+	pagination, err := api.PaginationRequest(r)
+	if err != nil {
+		http.Error(w, "Pagination Validation failure, error: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	res, err := h.repository.GetAllProducts(pagination.Limit, pagination.Offset)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

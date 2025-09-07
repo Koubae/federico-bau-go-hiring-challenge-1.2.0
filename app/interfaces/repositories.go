@@ -5,5 +5,5 @@ import (
 )
 
 type ProductsRepository interface {
-	GetAllProducts() ([]models.Product, error)
+	GetAllProducts(limit int, offset int) ([]models.Product, error)
 }

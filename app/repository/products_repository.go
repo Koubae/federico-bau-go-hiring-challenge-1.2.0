@@ -15,9 +15,16 @@ func NewProductsRepository(db *database.Client) *SQLProductsRepository {
 	}
 }
 
-func (r *SQLProductsRepository) GetAllProducts() ([]models.Product, error) {
+func (r *SQLProductsRepository) GetAllProducts(limit int, offset int) ([]models.Product, error) {
 	var products []models.Product
-	if err := r.db.DB.Preload("Category").Preload("Variants").Find(&products).Error; err != nil {
+	if err := r.db.DB.
+		Preload("Category").
+		Preload("Variants").
+		Order("id ASC").
+		Limit(limit).
+		Offset(offset).
+		Find(&products).
+		Error; err != nil {
 		return nil, err
 	}
 	return products, nil
