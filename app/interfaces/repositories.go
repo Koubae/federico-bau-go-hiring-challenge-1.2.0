@@ -5,6 +5,14 @@ import (
 )
 
 type ProductsRepository interface {
-	GetAllProductsWithPagination(limit int, offset int) ([]models.Product, error)
+	GetAllProductsWithPagination(
+		category *string,
+		priceLessThen *float64,
+		limit int,
+		offset int,
+	) (
+		[]models.Product,
+		error,
+	)
 	Count() (*int64, error)
 }

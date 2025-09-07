@@ -22,7 +22,12 @@ type mockProductsRepository struct {
 	countError error
 }
 
-func (m *mockProductsRepository) GetAllProductsWithPagination(limit int, offset int) ([]models.Product, error) {
+func (m *mockProductsRepository) GetAllProductsWithPagination(
+	category *string,
+	priceLessThen *float64,
+	limit int,
+	offset int,
+) ([]models.Product, error) {
 	if m.getError != nil {
 		return nil, m.getError
 	}

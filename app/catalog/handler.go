@@ -2,6 +2,7 @@ package catalog
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/mytheresa/go-hiring-challenge/app/api"
 	"github.com/mytheresa/go-hiring-challenge/app/interfaces"
@@ -40,7 +41,20 @@ func (h *CatalogHandler) HandleGet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := h.repository.GetAllProductsWithPagination(pagination.Limit, pagination.Offset)
+	q := r.URL.Query()
+
+	var category *string
+	if cat := q.Get("category"); cat != "" {
+		category = &cat
+	}
+	var priceLessThen *float64
+	if p := q.Get("priceLessThen"); p != "" {
+		if val, err := strconv.ParseFloat(p, 64); err == nil {
+			priceLessThen = &val
+		}
+	}
+
+	res, err := h.repository.GetAllProductsWithPagination(category, priceLessThen, pagination.Limit, pagination.Offset)
 	if err != nil {
 		api.ErrorResponse(w, http.StatusInternalServerError, "Unexpected error occurred, please try again later.")
 		return
