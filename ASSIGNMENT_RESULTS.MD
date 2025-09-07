@@ -8,7 +8,7 @@ Federico Bau -- Assignment Results
     * [solution/assignment-1-implementation](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1-implementation):
       Main branch with the final assignment implementation implementing what's been requested in [ASSIGNMENT.md](./ASSIGNMENT.md)
         * [Assignment 1-A Refactor Product Repository #1](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/1)
-          First Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint [1) Changes from Assignment 1-A Refactor Product Repository  ](#1-changes-from-assignment-1-a-refactor-product-repository-)
+     
 
 ### 1) Changes from Assignment 1-A Refactor Product Repository  
 
