@@ -146,3 +146,35 @@ Response:
 #### Change Log
 
 * Moved structured used by handlers into `dto` package
+* Implemented List Category Endpoint
+
+
+#### List categories
+
+Request:
+
+```bash
+curl --location 'http://localhost:8484/categories?limit=10&offset=0'
+```
+
+Response:
+
+```bash
+{
+    "total": 3,
+    "categories": [
+        {
+            "code": "CAT001",
+            "name": "Clothing"
+        },
+        {
+            "code": "CAT002",
+            "name": "Shoes"
+        },
+        {
+            "code": "CAT003",
+            "name": "Accessories"
+        }
+    ]
+}
+```
