@@ -1,11 +1,11 @@
 package container
 
 import (
+	"log"
+
 	"github.com/mytheresa/go-hiring-challenge/app/database"
 	"github.com/mytheresa/go-hiring-challenge/app/interfaces"
-	"github.com/mytheresa/go-hiring-challenge/models"
-
-	"log"
+	"github.com/mytheresa/go-hiring-challenge/app/models"
 )
 
 type DependencyInjectionContainer struct {

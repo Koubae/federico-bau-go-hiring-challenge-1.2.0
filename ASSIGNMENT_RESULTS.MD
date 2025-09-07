@@ -42,3 +42,4 @@ Federico Bau -- Assignment Results
   For now what this does is: 1) Drop all models 2) Create All models 3) Load the seed data. So we let GORM's ORM do its job
 
 * Now [sql](./sql) folder contains only SEED / Test data, but wont' create nor delete tables.
+* Refactor models into app/models

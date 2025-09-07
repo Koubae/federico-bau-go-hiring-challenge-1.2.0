@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/joho/godotenv"
-	"github.com/mytheresa/go-hiring-challenge/models"
+	"github.com/mytheresa/go-hiring-challenge/app/models"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
