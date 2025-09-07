@@ -15,7 +15,7 @@ First Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint
 
 * Added `.gitattribute ` to fix EOF
 * Created a new Gorm Client wrapper as a struct, defining common methods such as shutdown
-* Added `POSTGRES_HOST` + `POSTGRES_SSL_MODE` to env variables!
+* Added `POSTGRES_HOST` + `POSTGRES_SSL_MODE` + `POSTGRES_LOG_LEVEL` to env variables!
 * Modified how we load env variables For the database connection, using a `DatabaseConfig` struct 
 * Created `DependencyInjectionContainer` which is responsible to create, provide and cleanup applications' resources
   such as database connection. Now `DependencyInjectionContainer` creates the postgres client and the database connection.

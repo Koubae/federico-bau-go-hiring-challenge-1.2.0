@@ -21,7 +21,7 @@ func New() (*Client, error) {
 
 	db, err = gorm.Open(
 		postgres.Open(config.Dns()), &gorm.Config{
-			Logger:      logger.Default.LogMode(logger.Info),
+			Logger:      logger.Default.LogMode(config.LogLevel),
 			PrepareStmt: true,
 		},
 	)
