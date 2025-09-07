@@ -5,7 +5,7 @@ import (
 
 	"github.com/mytheresa/go-hiring-challenge/app/database"
 	"github.com/mytheresa/go-hiring-challenge/app/interfaces"
-	"github.com/mytheresa/go-hiring-challenge/app/models"
+	"github.com/mytheresa/go-hiring-challenge/app/repository"
 )
 
 type DependencyInjectionContainer struct {
@@ -25,7 +25,7 @@ func CreateDIContainer() {
 		log.Fatal(err)
 	}
 
-	productsRepository := models.NewProductsRepository(db)
+	productsRepository := repository.NewProductsRepository(db)
 
 	Container = &DependencyInjectionContainer{
 		DB:                db,
