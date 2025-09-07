@@ -10,11 +10,23 @@ This repository contains a Go application for managing products and their prices
 
 * **[ASSIGNMENT_RESULTS.MD](./dev/ASSIGNMENT_RESULTS.MD)** 
 * [PostMan Collection](./dev/mytheresa_(Products)_V001.postman_collection.json)
+* [TODO](./dev/TODO.MD)
 
 
 ### QuickStart
 
-#### Hot-Reloader: [Air](https://github.com/air-verse/air) 
+```bash
+make quickstart
+```
+
+#### Try the API
+
+* Catalog List: http://localhost:8484/catalog?category=Accessories&priceLessThen=10&limit=100&offset=0
+* Product Details: http://localhost:8484/catalog/PROD007
+
+I suggest that you use [PostMan Collection](./dev/mytheresa_(Products)_V001.postman_collection.json)
+
+#### Hot-Reloader: [Air](https://github.com/air-verse/air)
 
 * 1) Install [air-verse/air](https://github.com/air-verse/air) globally
 
@@ -27,7 +39,8 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin
 ```
 
-#### Run the application 
+### Run the application
+
 
 
 ```bash
@@ -40,12 +53,12 @@ make run-reload
 make run
 ```
 
-#### Try the API
+### Other commands
 
-* Catalog List: http://localhost:8484/catalog?category=Accessories&priceLessThen=10&limit=100&offset=0
-* Product Details: http://localhost:8484/catalog/PROD007
+```bash
 
-I suggest you to use [PostMan Collection](./dev/mytheresa_(Products)_V001.postman_collection.json)
+```
+
 
 ----
 
