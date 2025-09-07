@@ -51,7 +51,7 @@ Federico Bau -- Assignment Results
 
 * PR:
 * Branch: solution/assignment-1/c-add-pagination-in-catalog-endpoint
-* Task: Thirs Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint, Update the catalog handler and relevant repositories to support offset pagination.
+* Task: Third Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint, Update the catalog handler and relevant repositories to support offset pagination.
 
 #### Change Log
 
