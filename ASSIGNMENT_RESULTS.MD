@@ -5,12 +5,14 @@ Federico Bau -- Assignment Results
 ### Branches
 
 * **Final Assignment Branch:** https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/federico-bau-assignment
-    * [solution/assignment-1-implementation](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1-implementation):
-      Main branch with the final assignment implementation implementing what's been requested in [ASSIGNMENT.md](./ASSIGNMENT.md)
-        * [1) Assignment 1-A Refactor Product Repository #1](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/1)
-        * [2) Assignment 1-B: Create a Product Category Model #2](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/2)
-     
-
+    * Main branch with the final assignment implementation: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/7
+      1) Assignment 1-A Refactor Product Repository #1: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/1
+      2) Assignment 1-B: Create a Product Category Model #2: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/2
+      3) Assignment 1-C: Add Pagination in Catalog Endpoint: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/3
+      4) Assignment 1-D: Catalog an Endpoint query by category and price: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/4
+      5) Assignment 1-E: Product details endpoint: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/5
+      6) Assignment 1-F: Categories endpoint CRUD: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/6
+        
 ### 1) Assignment 1-A: Refactor Product Repository  
 
 * PR: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/1
