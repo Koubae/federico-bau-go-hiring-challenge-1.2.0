@@ -11,8 +11,9 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/mytheresa/go-hiring-challenge/app/catalog"
-	"github.com/mytheresa/go-hiring-challenge/app/database"
-	"github.com/mytheresa/go-hiring-challenge/models"
+	"github.com/mytheresa/go-hiring-challenge/app/category"
+	"github.com/mytheresa/go-hiring-challenge/app/container"
+	"github.com/mytheresa/go-hiring-challenge/app/middlewares"
 )
 
 func main() {
@@ -25,27 +26,28 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	// Initialize database connection
-	db, close := database.New(
-		os.Getenv("POSTGRES_USER"),
-		os.Getenv("POSTGRES_PASSWORD"),
-		os.Getenv("POSTGRES_DB"),
-		os.Getenv("POSTGRES_PORT"),
-	)
-	defer close()
-
-	// Initialize handlers
-	prodRepo := models.NewProductsRepository(db)
-	cat := catalog.NewCatalogHandler(prodRepo)
+	container.CreateDIContainer()
+	defer container.ShutDown()
 
 	// Set up routing
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /catalog", cat.HandleGet)
+
+	categoryHandler := category.NewCategoryHandler(container.Container.CategoryRepository)
+	mux.HandleFunc("GET /categories", categoryHandler.ListCategories)
+	mux.HandleFunc("POST /categories", categoryHandler.CreateCategory)
+
+	catalogHandler := catalog.NewCatalogHandler(container.Container.ProductRepository)
+	mux.HandleFunc("GET /catalog", catalogHandler.ListCatalog)
+	mux.HandleFunc("GET /catalog/{code}", catalogHandler.GetProductDetails)
+
+	var handler http.Handler = mux
+	handler = middlewares.RecoverPanic(middlewares.LogAccessMiddleware(mux))
 
 	// Set up the HTTP server
+	// TODO: better way to handle how we load env variables!"
 	srv := &http.Server{
 		Addr:    fmt.Sprintf("localhost:%s", os.Getenv("HTTP_PORT")),
-		Handler: mux,
+		Handler: handler,
 	}
 
 	// Start the server

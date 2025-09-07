@@ -5,7 +5,41 @@ This repository contains a Go application for managing products and their prices
 * Repository: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0
 * **Final Assignment Branch:** https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/federico-bau-assignment
 * Author: [Federico Bau](https://federicobau.dev/)
+* SEE 🚨🚨🚨 **[ASSIGNMENT_RESULTS.MD](./ASSIGNMENT_RESULTS.MD)** 🚨🚨🚨
 
+
+### QuickStart
+
+#### Hot-Reloader: [Air](https://github.com/air-verse/air) 
+
+* 1) Install [air-verse/air](https://github.com/air-verse/air) globally
+
+```bash
+go install github.com/air-verse/air@latest
+
+# Make sure that GOPATH and GOROOT is in your PATH
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin
+```
+
+#### Run the application 
+
+
+```bash
+make tidy
+# Create Database
+make seed 
+# Run Server (Hot-Reloader)
+make run-reload
+# Run Server (No Hot-Reloader)
+make run
+```
+
+#### Try the API
+
+* Catalog List: http://localhost:8484/catalog?category=Accessories&priceLessThen=10&limit=100&offset=0
+* Product Details: http://localhost:8484/catalog/PROD007
 
 ## Project Structure
 
