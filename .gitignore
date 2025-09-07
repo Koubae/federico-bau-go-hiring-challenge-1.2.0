@@ -24,7 +24,7 @@ go.work
 go.work.sum
 
 # env file
-#.env  TODO: this should be removed in future work
+.env
 
 # Editor/IDE
 .idea/
