@@ -139,15 +139,15 @@ Response:
 
 ### 6) Assignment 1-F: Categories endpoint CRUD
 
-* PR: 
-* Branch: [solution/assignment-1/f-category-crud]()
+* PR: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/6
+* Branch: [solution/assignment-1/f-category-crud](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/f-category-crud)
 * Task: Sixth Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Categories endpoint CRUD
 
 #### Change Log
 
 * Moved structured used by handlers into `dto` package
 * Implemented List Category Endpoint
-* Implemented Create Category Endpoint
+* Implemented Creates Category Endpoint
 
 
 #### List categories
