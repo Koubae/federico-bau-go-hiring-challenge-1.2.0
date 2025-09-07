@@ -2,6 +2,10 @@
 
 This repository contains a Go application for managing products and their prices, including functionalities for CRUD operations and seeding the database with initial data.
 
+* Repository: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0
+* Author: [Federico Bau](https://federicobau.dev/)
+
+
 ## Project Structure
 
 1. **cmd/**: Contains the main application and seed command entry points.
