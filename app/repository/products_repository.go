@@ -15,7 +15,7 @@ func NewProductsRepository(db *database.Client) *SQLProductsRepository {
 	}
 }
 
-func (r *SQLProductsRepository) GetAllProducts(limit int, offset int) ([]models.Product, error) {
+func (r *SQLProductsRepository) GetAllProductsWithPagination(limit int, offset int) ([]models.Product, error) {
 	var products []models.Product
 	if err := r.db.DB.
 		Preload("Category").
@@ -28,4 +28,12 @@ func (r *SQLProductsRepository) GetAllProducts(limit int, offset int) ([]models.
 		return nil, err
 	}
 	return products, nil
+}
+
+func (r *SQLProductsRepository) Count() (*int64, error) {
+	var count int64
+	if err := r.db.DB.Model(&models.Product{}).Count(&count).Error; err != nil {
+		return nil, err
+	}
+	return &count, nil
 }

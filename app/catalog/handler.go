@@ -8,6 +8,7 @@ import (
 )
 
 type Response struct {
+	Total    int64     `json:"total"`
 	Products []Product `json:"products"`
 }
 
@@ -39,7 +40,13 @@ func (h *CatalogHandler) HandleGet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := h.repository.GetAllProducts(pagination.Limit, pagination.Offset)
+	res, err := h.repository.GetAllProductsWithPagination(pagination.Limit, pagination.Offset)
+	if err != nil {
+		api.ErrorResponse(w, http.StatusInternalServerError, "Unexpected error occurred, please try again later.")
+		return
+	}
+
+	total, err := h.repository.Count()
 	if err != nil {
 		api.ErrorResponse(w, http.StatusInternalServerError, "Unexpected error occurred, please try again later.")
 		return
@@ -59,6 +66,7 @@ func (h *CatalogHandler) HandleGet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := Response{
+		Total:    *total,
 		Products: products,
 	}
 	api.OKResponse(w, response)
