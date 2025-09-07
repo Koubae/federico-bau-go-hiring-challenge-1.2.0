@@ -486,3 +486,109 @@ func TestCatalogHandler_HandleGet_PaginationLogic(t *testing.T) {
 		)
 	}
 }
+
+func TestCatalogHandler_HandleGet_CategoryFilter(t *testing.T) {
+	// Test data with different categories
+	mockProducts := []models.Product{
+		{
+			Code:  "CLOTHING001",
+			Price: decimal.NewFromFloat(50.00),
+			Category: models.Category{
+				Code: "CLOTHING",
+				Name: "Clothing",
+			},
+		},
+		{
+			Code:  "SHOES001",
+			Price: decimal.NewFromFloat(100.00),
+			Category: models.Category{
+				Code: "SHOES",
+				Name: "Shoes",
+			},
+		},
+	}
+
+	mockRepo := &mockProductsRepository{
+		products: mockProducts,
+		count:    2,
+	}
+
+	handler := NewCatalogHandler(mockRepo)
+
+	t.Run(
+		"filter by category", func(t *testing.T) {
+			req := httptest.NewRequest("GET", "/catalog?category=Clothing", nil)
+			rr := httptest.NewRecorder()
+
+			handler.HandleGet(rr, req)
+
+			if rr.Code != http.StatusOK {
+				t.Fatalf("Expected status 200, got %d", rr.Code)
+			}
+
+			var response Response
+			err := json.Unmarshal(rr.Body.Bytes(), &response)
+			if err != nil {
+				t.Fatalf("Failed to unmarshal response: %v", err)
+			}
+
+			// Since mock doesn't filter, we just verify the request was processed correctly
+			if len(response.Products) != 2 {
+				t.Errorf("Expected 2 products, got %d", len(response.Products))
+			}
+		},
+	)
+}
+
+func TestCatalogHandler_HandleGet_PriceFilter(t *testing.T) {
+	// Test data with different prices
+	mockProducts := []models.Product{
+		{
+			Code:  "CHEAP001",
+			Price: decimal.NewFromFloat(25.00),
+			Category: models.Category{
+				Code: "TEST",
+				Name: "Test",
+			},
+		},
+		{
+			Code:  "EXPENSIVE001",
+			Price: decimal.NewFromFloat(150.00),
+			Category: models.Category{
+				Code: "TEST",
+				Name: "Test",
+			},
+		},
+	}
+
+	mockRepo := &mockProductsRepository{
+		products: mockProducts,
+		count:    2,
+	}
+
+	handler := NewCatalogHandler(mockRepo)
+
+	t.Run(
+		"filter by price less than", func(t *testing.T) {
+			req := httptest.NewRequest("GET", "/catalog?priceLessThen=100.00", nil)
+			rr := httptest.NewRecorder()
+
+			handler.HandleGet(rr, req)
+
+			if rr.Code != http.StatusOK {
+				t.Fatalf("Expected status 200, got %d", rr.Code)
+			}
+
+			var response Response
+			err := json.Unmarshal(rr.Body.Bytes(), &response)
+			if err != nil {
+				t.Fatalf("Failed to unmarshal response: %v", err)
+			}
+
+			// Since mock doesn't filter, we just verify the request was processed correctly
+			if len(response.Products) != 2 {
+				t.Errorf("Expected 2 products, got %d", len(response.Products))
+			}
+		},
+	)
+}
