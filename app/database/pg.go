@@ -1,26 +1,52 @@
 package database
 
 import (
-	"fmt"
+	"errors"
 	"log"
 
 	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-func New(user, password, dbname, port string) (db *gorm.DB, close func() error) {
-	dsn := fmt.Sprintf("postgres://%s:%s@localhost:%s/%s?sslmode=disable", user, password, port, dbname)
+var client *Client
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+func New() (*Client, error) {
+	var err error
+	var db *gorm.DB
+	var config *DatabaseConfig
+
+	config = NewDatabaseConfig()
+
+	db, err = gorm.Open(
+		postgres.Open(config.Dns()), &gorm.Config{
+			Logger:      logger.Default.LogMode(config.LogLevel),
+			PrepareStmt: true,
+		},
+	)
 	if err != nil {
-		log.Fatalf("failed to connect database: %s", err)
+		return nil, errors.New("Failed to connect database, error: " + err.Error())
 	}
 
-	sqlDB, err := db.DB()
+	_, err = db.DB()
 	if err != nil {
-		log.Fatalf("Failed to get database connection: %s", err)
+		return nil, errors.New("Failed to get database connection, error: " + err.Error())
 	}
 
-	return db, sqlDB.Close
+	client = &Client{
+		Config: config,
+		DB:     db,
+	}
+	client.Ping()
+
+	log.Printf("Database connected 🌐🛜✅ %v\n", client)
+	return client, nil
+}
+
+func GetClient() *Client {
+	if client == nil {
+		panic("PostgreSQL Client is not initialized!")
+	}
+	return client
 }
