@@ -11,6 +11,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/mytheresa/go-hiring-challenge/app/catalog"
+	"github.com/mytheresa/go-hiring-challenge/app/category"
 	"github.com/mytheresa/go-hiring-challenge/app/container"
 	"github.com/mytheresa/go-hiring-challenge/app/middlewares"
 )
@@ -28,13 +29,16 @@ func main() {
 	container.CreateDIContainer()
 	defer container.ShutDown()
 
-	// Initialize handlers
-	cat := catalog.NewCatalogHandler(container.Container.ProductRepository)
-
 	// Set up routing
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /catalog", cat.ListCatalog)
-	mux.HandleFunc("GET /catalog/{code}", cat.GetProductDetails)
+
+	categoryHandler := category.NewCategoryHandler(container.Container.CategoryRepository)
+	mux.HandleFunc("GET /categories", categoryHandler.ListCategories)
+	mux.HandleFunc("POST /categories", categoryHandler.CreateCategory)
+
+	catalogHandler := catalog.NewCatalogHandler(container.Container.ProductRepository)
+	mux.HandleFunc("GET /catalog", catalogHandler.ListCatalog)
+	mux.HandleFunc("GET /catalog/{code}", catalogHandler.GetProductDetails)
 
 	var handler http.Handler = mux
 	handler = middlewares.RecoverPanic(middlewares.LogAccessMiddleware(mux))

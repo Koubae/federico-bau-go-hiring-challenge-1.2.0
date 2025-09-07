@@ -9,6 +9,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/mytheresa/go-hiring-challenge/app/dto"
 	"github.com/mytheresa/go-hiring-challenge/app/interfaces"
 	"github.com/mytheresa/go-hiring-challenge/app/models"
 	"github.com/shopspring/decimal"
@@ -142,11 +143,11 @@ func TestCatalogHandler_ListCatalog(t *testing.T) {
 			expectedStatus: http.StatusOK,
 			expectedBody: ListCatalogResponse{
 				Total: 2,
-				Products: []Product{
+				Products: []dto.Product{
 					{
 						Code:  "PROD001",
 						Price: 100.50,
-						Category: Category{
+						Category: dto.Category{
 							Code: "CLOTHING",
 							Name: "Clothing",
 						},
@@ -154,7 +155,7 @@ func TestCatalogHandler_ListCatalog(t *testing.T) {
 					{
 						Code:  "PROD002",
 						Price: 200.75,
-						Category: Category{
+						Category: dto.Category{
 							Code: "SHOES",
 							Name: "Shoes",
 						},
@@ -173,11 +174,11 @@ func TestCatalogHandler_ListCatalog(t *testing.T) {
 			expectedStatus: http.StatusOK,
 			expectedBody: ListCatalogResponse{
 				Total: 2,
-				Products: []Product{
+				Products: []dto.Product{
 					{
 						Code:  "PROD002",
 						Price: 200.75,
-						Category: Category{
+						Category: dto.Category{
 							Code: "SHOES",
 							Name: "Shoes",
 						},
@@ -229,7 +230,7 @@ func TestCatalogHandler_ListCatalog(t *testing.T) {
 			expectedStatus: http.StatusOK,
 			expectedBody: ListCatalogResponse{
 				Total:    0,
-				Products: []Product{},
+				Products: []dto.Product{},
 			},
 			checkBody: true,
 		},
@@ -642,17 +643,17 @@ func TestCatalogHandler_GetProductDetails(t *testing.T) {
 			},
 			expectedStatus: http.StatusOK,
 			expectedBody: GetProductDetailsResponse{
-				ProductWithDetails{
+				dto.ProductWithDetails{
 					ID: 1,
-					Product: Product{
+					Product: dto.Product{
 						Code:  "PROD001",
 						Price: 99.99,
-						Category: Category{
+						Category: dto.Category{
 							Code: "CLOTHING",
 							Name: "Clothing",
 						},
 					},
-					ProductVariant: []ProductVariant{
+					ProductVariant: []dto.ProductVariant{
 						{
 							ID:    1,
 							SKU:   "SKU001A",
@@ -678,17 +679,17 @@ func TestCatalogHandler_GetProductDetails(t *testing.T) {
 			},
 			expectedStatus: http.StatusOK,
 			expectedBody: GetProductDetailsResponse{
-				ProductWithDetails{
+				dto.ProductWithDetails{
 					ID: 2,
-					Product: Product{
+					Product: dto.Product{
 						Code:  "PROD002",
 						Price: 150.00,
-						Category: Category{
+						Category: dto.Category{
 							Code: "SHOES",
 							Name: "Shoes",
 						},
 					},
-					ProductVariant: []ProductVariant{},
+					ProductVariant: []dto.ProductVariant{},
 				},
 			},
 			checkBody: true,
@@ -701,17 +702,17 @@ func TestCatalogHandler_GetProductDetails(t *testing.T) {
 			},
 			expectedStatus: http.StatusNotFound,
 			expectedBody: GetProductDetailsResponse{
-				ProductWithDetails{
+				dto.ProductWithDetails{
 					ID: 0,
-					Product: Product{
+					Product: dto.Product{
 						Code:  "",
 						Price: 0,
-						Category: Category{
+						Category: dto.Category{
 							Code: "",
 							Name: "",
 						},
 					},
-					ProductVariant: []ProductVariant{},
+					ProductVariant: []dto.ProductVariant{},
 				},
 			},
 			checkBody: true,

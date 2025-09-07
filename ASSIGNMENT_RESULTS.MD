@@ -75,7 +75,7 @@ Federico Bau -- Assignment Results
 
 * PR: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/5
 * Branch: [solution/assignment-1/e-product-detail-endpoint](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/e-product-detail-endpoint)
-* Task: Fourth Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Product details endpoint
+* Task: Fifth Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Product details endpoint
 
 #### Change Log
 
@@ -135,3 +135,75 @@ Response:
   ]
 }
 ```
+
+
+### 6) Assignment 1-F: Categories endpoint CRUD
+
+* PR: 
+* Branch: [solution/assignment-1/f-category-crud]()
+* Task: Sixth Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Categories endpoint CRUD
+
+#### Change Log
+
+* Moved structured used by handlers into `dto` package
+* Implemented List Category Endpoint
+* Implemented Create Category Endpoint
+
+
+#### List categories
+
+Request:
+
+```bash
+curl --location 'http://localhost:8484/categories?limit=10&offset=0'
+```
+
+Response:
+
+```bash
+{
+    "total": 3,
+    "categories": [
+        {
+            "code": "CAT001",
+            "name": "Clothing"
+        },
+        {
+            "code": "CAT002",
+            "name": "Shoes"
+        },
+        {
+            "code": "CAT003",
+            "name": "Accessories"
+        }
+    ]
+}
+```
+
+#### Craete Category
+
+Request:
+```bash
+curl --location 'http://localhost:8484/categories' \
+--header 'Content-Type: application/json' \
+--data '{
+    "code": "HATS_BASEBALL",
+    "name": "Baseball Hats"
+}'
+```
+
+Response: (creates new) Status 201
+```json
+{
+    "id": 14,
+    "code": "HATS_BASEBALL",
+    "name": "Baseball Hats"
+}
+```
+Response (already created) Status 409
+
+```json
+{
+    "error": "Category already exists"
+}
+``` 

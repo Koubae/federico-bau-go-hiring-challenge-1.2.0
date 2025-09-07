@@ -5,32 +5,9 @@ import (
 	"strconv"
 
 	"github.com/mytheresa/go-hiring-challenge/app/api"
+	"github.com/mytheresa/go-hiring-challenge/app/dto"
 	"github.com/mytheresa/go-hiring-challenge/app/interfaces"
 )
-
-type Category struct {
-	Code string `json:"code"`
-	Name string `json:"name"`
-}
-
-type Product struct {
-	Code     string   `json:"code"`
-	Price    float64  `json:"price"`
-	Category Category `json:"category"`
-}
-
-type ProductVariant struct {
-	ID    uint    `json:"id"`
-	SKU   string  `json:"sku"`
-	Name  string  `json:"name"`
-	Price float64 `json:"price"`
-}
-
-type ProductWithDetails struct {
-	ID uint `json:"id"`
-	Product
-	ProductVariant []ProductVariant `json:"variants"`
-}
 
 type CatalogHandler struct {
 	repository interfaces.ProductsRepository
@@ -43,8 +20,8 @@ func NewCatalogHandler(r interfaces.ProductsRepository) *CatalogHandler {
 }
 
 type ListCatalogResponse struct {
-	Total    int64     `json:"total"`
-	Products []Product `json:"products"`
+	Total    int64         `json:"total"`
+	Products []dto.Product `json:"products"`
 }
 
 func (h *CatalogHandler) ListCatalog(w http.ResponseWriter, r *http.Request) {
@@ -80,12 +57,12 @@ func (h *CatalogHandler) ListCatalog(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Map response
-	products := make([]Product, len(res))
+	products := make([]dto.Product, len(res))
 	for i, p := range res {
-		products[i] = Product{
+		products[i] = dto.Product{
 			Code:  p.Code,
 			Price: p.Price.InexactFloat64(),
-			Category: Category{
+			Category: dto.Category{
 				Code: p.Category.Code,
 				Name: p.Category.Name,
 			},
@@ -101,7 +78,7 @@ func (h *CatalogHandler) ListCatalog(w http.ResponseWriter, r *http.Request) {
 }
 
 type GetProductDetailsResponse struct {
-	ProductWithDetails
+	dto.ProductWithDetails
 }
 
 func (h *CatalogHandler) GetProductDetails(w http.ResponseWriter, r *http.Request) {
@@ -117,14 +94,14 @@ func (h *CatalogHandler) GetProductDetails(w http.ResponseWriter, r *http.Reques
 	}
 
 	basePrice := res.Price.InexactFloat64()
-	variants := make([]ProductVariant, len(res.Variants))
+	variants := make([]dto.ProductVariant, len(res.Variants))
 	for i, v := range res.Variants {
 		variantPrice := v.Price.InexactFloat64()
 		if variantPrice == 0 {
 			variantPrice = basePrice
 		}
 
-		variants[i] = ProductVariant{
+		variants[i] = dto.ProductVariant{
 			ID:    v.ID,
 			SKU:   v.SKU,
 			Name:  v.Name,
@@ -133,12 +110,12 @@ func (h *CatalogHandler) GetProductDetails(w http.ResponseWriter, r *http.Reques
 	}
 
 	response := GetProductDetailsResponse{
-		ProductWithDetails{
+		dto.ProductWithDetails{
 			ID: res.ID,
-			Product: Product{
+			Product: dto.Product{
 				Code:  res.Code,
 				Price: res.Price.InexactFloat64(),
-				Category: Category{
+				Category: dto.Category{
 					Code: res.Category.Code,
 					Name: res.Category.Name,
 				},

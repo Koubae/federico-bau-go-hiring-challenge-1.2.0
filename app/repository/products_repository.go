@@ -3,17 +3,11 @@ package repository
 import (
 	"errors"
 	"log"
-	"time"
 
 	"github.com/jellydator/ttlcache/v3"
 	"github.com/mytheresa/go-hiring-challenge/app/database"
 	"github.com/mytheresa/go-hiring-challenge/app/models"
 	"gorm.io/gorm"
-)
-
-const (
-	CacheTTL             = 3 * time.Minute
-	CacheProductCountKey = "products__count"
 )
 
 type SQLProductsRepository struct {
@@ -46,7 +40,7 @@ func (r *SQLProductsRepository) GetProductByCode(code string) (*models.Product, 
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
-		return nil, err
+		return nil, errors.New("error while Get Product By Code")
 
 	}
 	return &product, nil
@@ -77,7 +71,7 @@ func (r *SQLProductsRepository) GetAllProductsWithPagination(
 		Offset(offset).
 		Find(&products).
 		Error; err != nil {
-		return nil, err
+		return nil, errors.New("error while listing Products Catalogs")
 	}
 	return products, nil
 }
@@ -90,7 +84,7 @@ func (r *SQLProductsRepository) Count() (*int64, error) {
 
 	var count int64
 	if err := r.db.DB.Model(&models.Product{}).Count(&count).Error; err != nil {
-		return nil, err
+		return nil, errors.New("error while counting Products")
 	}
 
 	r.cache.Set(CacheProductCountKey, &count, CacheTTL)

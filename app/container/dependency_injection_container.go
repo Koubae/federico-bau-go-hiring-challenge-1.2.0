@@ -9,8 +9,9 @@ import (
 )
 
 type DependencyInjectionContainer struct {
-	DB                *database.Client
-	ProductRepository interfaces.ProductsRepository
+	DB                 *database.Client
+	CategoryRepository interfaces.CategoriesRepository
+	ProductRepository  interfaces.ProductsRepository
 }
 
 var Container *DependencyInjectionContainer
@@ -25,11 +26,13 @@ func CreateDIContainer() {
 		log.Fatal(err)
 	}
 
+	categoryRepository := repository.NewCategoryRepository(db)
 	productsRepository := repository.NewProductsRepository(db)
 
 	Container = &DependencyInjectionContainer{
-		DB:                db,
-		ProductRepository: productsRepository,
+		DB:                 db,
+		CategoryRepository: categoryRepository,
+		ProductRepository:  productsRepository,
 	}
 }
 
