@@ -1,5 +1,23 @@
 services:
-  postgres:
+  product-api:
+    container_name: product-api
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile
+      target: product-api
+    environment:
+      POSTGRES_HOST: db-postgres
+    ports:
+      - "8484:8484"
+    networks:
+      - mytheresa-network
+    env_file:
+      - .env
+    depends_on:
+      db-postgres:
+        condition: service_healthy
+
+  db-postgres:
     image: postgres:17.5
     environment:
       POSTGRES_PASSWORD: password
@@ -7,8 +25,14 @@ services:
       POSTGRES_DB: challenge
     ports:
       - "5432:5432"
+    networks:
+      - mytheresa-network
     healthcheck:
       test: pg_isready
       interval: 5s
       timeout: 5s
       retries: 5
+
+
+networks:
+  mytheresa-network:

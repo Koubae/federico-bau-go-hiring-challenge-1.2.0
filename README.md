@@ -2,6 +2,74 @@
 
 This repository contains a Go application for managing products and their prices, including functionalities for CRUD operations and seeding the database with initial data.
 
+* Repository: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0
+* **Final Assignment Branch:** https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/federico-bau-assignment
+* Author: [Federico Bau](https://federicobau.dev/)
+
+### See  Please SEE 🚨🚨🚨
+
+* **[ASSIGNMENT_RESULTS.MD](./dev/ASSIGNMENT_RESULTS.MD)** 
+* [PostMan Collection](./dev/mytheresa_(Products)_V001.postman_collection.json)
+* [TODO](./dev/TODO.MD)
+
+
+### QuickStart
+
+```bash
+make quickstart
+```
+
+**IMPORTANT 🚨🚨🚨**
+If you have an issue running the docker-compose App try using go locally
+
+```bash
+make quickstart-local
+```
+
+
+#### Try the API
+
+* Catalog List: http://localhost:8484/catalog?category=Accessories&priceLessThen=10&limit=100&offset=0
+* Product Details: http://localhost:8484/catalog/PROD007
+
+I suggest that you use [PostMan Collection](./dev/mytheresa_(Products)_V001.postman_collection.json)
+
+#### Hot-Reloader: [Air](https://github.com/air-verse/air)
+
+* 1) Install [air-verse/air](https://github.com/air-verse/air) globally
+
+```bash
+go install github.com/air-verse/air@latest
+
+# Make sure that GOPATH and GOROOT is in your PATH
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin
+```
+
+### Run the application
+
+```bash
+make tidy
+# Create Database
+make seed 
+# Run Server (Hot-Reloader)
+make run-reload
+# Run Server (No Hot-Reloader)
+make run
+```
+
+### Other commands
+
+```bash
+# update .env file
+make update-env-file
+
+```
+
+
+----
+
 ## Project Structure
 
 1. **cmd/**: Contains the main application and seed command entry points.

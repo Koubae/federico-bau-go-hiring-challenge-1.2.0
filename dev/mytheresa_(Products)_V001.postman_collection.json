@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "22fd5c07-3ce2-405a-8e73-61010e080e47",
+		"name": "mytheresa (Products)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12556739",
+		"_collection_link": "https://federico-2339.postman.co/workspace/workspace_2~1c63b69a-8d24-426b-a534-8af6f5ffa2e6/collection/12556739-22fd5c07-3ce2-405a-8e73-61010e080e47?action=share&source=collection_link&creator=12556739"
+	},
+	"item": [
+		{
+			"name": "Catalog",
+			"item": [
+				{
+					"name": "List Catalog",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PRODUCT_API_URL}}/catalog?category=Accessories&priceLessThen=10&limit=100&offset=0",
+							"host": [
+								"{{PRODUCT_API_URL}}"
+							],
+							"path": [
+								"catalog"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Accessories",
+									"description": "Optional | String  | Clothing, Shoes, Accessories"
+								},
+								{
+									"key": "priceLessThen",
+									"value": "10",
+									"description": "Optional | Float"
+								},
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Optional | Default 10"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Optional | Deafult 0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PRODUCT_API_URL}}/catalog/PROD007",
+							"host": [
+								"{{PRODUCT_API_URL}}"
+							],
+							"path": [
+								"catalog",
+								"PROD007"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "List Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PRODUCT_API_URL}}/categories?limit=10&offset=0",
+							"host": [
+								"{{PRODUCT_API_URL}}"
+							],
+							"path": [
+								"categories"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Optional | Default 10"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Optional | Deafult 0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"HATS_BASEBALL\",\r\n    \"name\": \"Baseball Hats\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PRODUCT_API_URL}}/categories",
+							"host": [
+								"{{PRODUCT_API_URL}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "PRODUCT_API_URL",
+			"value": "http://localhost:8485"
+		}
+	]
+}

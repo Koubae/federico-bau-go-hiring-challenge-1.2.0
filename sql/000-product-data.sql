@@ -1,13 +1,43 @@
+-- Insert 3 Categories
+INSERT INTO categories (code, name) VALUES
+('CAT001', 'Clothing'),
+('CAT002', 'Shoes'),
+('CAT003', 'Accessories')
+;
+
+-- =================================
 -- Insert 8 products
-INSERT INTO products (code, price) VALUES
-('PROD001', 10.99),
-('PROD002', 12.49),
-('PROD003', 8.75),
-('PROD004', 15.00),
-('PROD005', 22.99),
-('PROD006', 5.50),
-('PROD007', 18.20),
-('PROD008', 9.99);
+-- =================================
+
+-- Insert in the Clothing category
+WITH category AS (
+    SELECT id FROM categories WHERE code = 'CAT001'
+ )
+INSERT INTO products (category_id, code, price) VALUES
+    ((SELECT id FROM category), 'PROD001', 10.99),
+    ((SELECT id FROM category), 'PROD004', 15.00),
+    ((SELECT id FROM category), 'PROD007', 18.20)
+;
+
+-- Insert in the Shoes category
+WITH category AS (
+    SELECT id FROM categories WHERE code = 'CAT002'
+)
+INSERT INTO products (category_id, code, price) VALUES
+    ((SELECT id FROM category), 'PROD002', 12.49),
+    ((SELECT id FROM category), 'PROD006', 5.50)
+;
+
+-- Insert in the Accessories category
+WITH category AS (
+    SELECT id FROM categories WHERE code = 'CAT003'
+)
+INSERT INTO products (category_id, code, price) VALUES
+    ((SELECT id FROM category), 'PROD003', 8.75),
+    ((SELECT id FROM category), 'PROD005', 22.99),
+    ((SELECT id FROM category), 'PROD008', 9.99)
+;
+
 
 -- Insert variants for each product using product code to look up product_id
 
