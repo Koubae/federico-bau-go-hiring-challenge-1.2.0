@@ -31,6 +31,21 @@ func NewProductsRepository(db *database.Client) *SQLProductsRepository {
 	}
 }
 
+func (r *SQLProductsRepository) GetProductByCode(code string) (*models.Product, error) {
+	var product models.Product
+
+	dbWithCtx := r.db.DB.Model(&models.Product{})
+
+	if err := dbWithCtx.
+		Preload("Category").
+		Preload("Variants").
+		Where("code = ?", code).
+		First(&product).Error; err != nil {
+		return nil, err
+	}
+	return &product, nil
+}
+
 func (r *SQLProductsRepository) GetAllProductsWithPagination(
 	category *string,
 	priceLessThen *float64,

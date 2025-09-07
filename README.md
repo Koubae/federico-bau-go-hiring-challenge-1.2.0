@@ -36,7 +36,10 @@ make run-reload
 make run
 ```
 
+#### Try the API
 
+* Catalog List: http://localhost:8484/catalog?category=Accessories&priceLessThen=10&limit=100&offset=0
+* Product Details: http://localhost:8484/catalog/PROD007
 
 ## Project Structure
 

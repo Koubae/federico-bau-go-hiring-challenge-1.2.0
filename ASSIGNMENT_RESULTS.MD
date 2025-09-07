@@ -80,3 +80,58 @@ Federico Bau -- Assignment Results
 #### Change Log
 
 * Renamed Catalog Handler `HandleGet` --> `ListCatalog`
+* Created new endpoint `/catalog/:code` at handler `CatalogHandler.GetProductDetails`
+* Implemented `ProductDetailsHandler`
+
+### Example
+
+Request: 
+
+```bash
+curl --location 'http://localhost:8484/catalog/PROD007'
+```
+
+Response: 
+```json
+{
+  "id": 3,
+  "code": "PROD007",
+  "price": 18.2,
+  "category": {
+    "code": "CAT001",
+    "name": "Clothing"
+  },
+  "variants": [
+    {
+      "id": 17,
+      "sku": "SKU007A",
+      "name": "Variant A",
+      "price": 18.2
+    },
+    {
+      "id": 18,
+      "sku": "SKU007B",
+      "name": "Variant B",
+      "price": 18.2
+    },
+    {
+      "id": 19,
+      "sku": "SKU007C",
+      "name": "Variant C",
+      "price": 18.2
+    },
+    {
+      "id": 20,
+      "sku": "SKU007D",
+      "name": "Variant D",
+      "price": 18.2
+    },
+    {
+      "id": 21,
+      "sku": "SKU007E",
+      "name": "Variant E",
+      "price": 18.75
+    }
+  ]
+}
+```

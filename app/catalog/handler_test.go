@@ -16,10 +16,25 @@ import (
 
 // mockProductsRepository is a mock implementation of interfaces.ProductsRepository
 type mockProductsRepository struct {
-	products   []models.Product
-	count      int64
-	getError   error
-	countError error
+	products       []models.Product
+	count          int64
+	getError       error
+	countError     error
+	getByCodeError error
+}
+
+func (m *mockProductsRepository) GetProductByCode(code string) (*models.Product, error) {
+	if m.getByCodeError != nil {
+		return nil, m.getByCodeError
+	}
+
+	for _, product := range m.products {
+		if product.Code == code {
+			return &product, nil
+		}
+	}
+
+	return nil, nil
 }
 
 func (m *mockProductsRepository) GetAllProductsWithPagination(
@@ -90,7 +105,6 @@ func TestNewCatalogHandler(t *testing.T) {
 }
 
 func TestCatalogHandler_ListCatalog(t *testing.T) {
-	// Test data setup
 	mockProducts := []models.Product{
 		{
 			Code:  "PROD001",
@@ -126,7 +140,7 @@ func TestCatalogHandler_ListCatalog(t *testing.T) {
 				count:    2,
 			},
 			expectedStatus: http.StatusOK,
-			expectedBody: Response{
+			expectedBody: ListCatalogResponse{
 				Total: 2,
 				Products: []Product{
 					{
@@ -157,7 +171,7 @@ func TestCatalogHandler_ListCatalog(t *testing.T) {
 				count:    2,
 			},
 			expectedStatus: http.StatusOK,
-			expectedBody: Response{
+			expectedBody: ListCatalogResponse{
 				Total: 2,
 				Products: []Product{
 					{
@@ -213,7 +227,7 @@ func TestCatalogHandler_ListCatalog(t *testing.T) {
 				count:    0,
 			},
 			expectedStatus: http.StatusOK,
-			expectedBody: Response{
+			expectedBody: ListCatalogResponse{
 				Total:    0,
 				Products: []Product{},
 			},
@@ -245,40 +259,29 @@ func TestCatalogHandler_ListCatalog(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(
 			tt.name, func(t *testing.T) {
-				// Create handler with mock repository
 				handler := NewCatalogHandler(tt.repository)
-
-				// Create request
 				req := httptest.NewRequest("GET", "/catalog"+tt.queryParams, nil)
-
-				// Create response recorder
 				rr := httptest.NewRecorder()
-
-				// Execute handler
 				handler.ListCatalog(rr, req)
 
-				// Check status code
 				if rr.Code != tt.expectedStatus {
 					t.Errorf("ListCatalog() status = %v, want %v", rr.Code, tt.expectedStatus)
 				}
 
-				// Check response body if needed
 				if tt.checkBody && tt.expectedStatus == http.StatusOK {
-					var response Response
+					var response ListCatalogResponse
 					err := json.Unmarshal(rr.Body.Bytes(), &response)
 					if err != nil {
 						t.Fatalf("Failed to unmarshal response: %v", err)
 					}
 
-					expectedResponse := tt.expectedBody.(Response)
+					expectedResponse := tt.expectedBody.(ListCatalogResponse)
 					if !reflect.DeepEqual(response, expectedResponse) {
 						t.Errorf("ListCatalog() response = %v, want %v", response, expectedResponse)
 					}
 				}
 
-				// For error cases, check that response contains error structure
 				if tt.expectedStatus != http.StatusOK && tt.checkBody == false {
-					// Verify that response body contains error information
 					var errorResponse map[string]interface{}
 					err := json.Unmarshal(rr.Body.Bytes(), &errorResponse)
 					if err != nil {
@@ -291,7 +294,6 @@ func TestCatalogHandler_ListCatalog(t *testing.T) {
 }
 
 func TestCatalogHandler_ListCatalog_Integration(t *testing.T) {
-	// This test focuses on the integration aspects and edge cases
 	mockRepo := &mockProductsRepository{
 		products: []models.Product{
 			{
@@ -333,13 +335,12 @@ func TestCatalogHandler_ListCatalog_Integration(t *testing.T) {
 				t.Fatalf("Expected status 200, got %d", rr.Code)
 			}
 
-			var response Response
+			var response ListCatalogResponse
 			err := json.Unmarshal(rr.Body.Bytes(), &response)
 			if err != nil {
 				t.Fatalf("Failed to unmarshal response: %v", err)
 			}
 
-			// Validate response structure
 			if response.Total != 1 {
 				t.Errorf("Expected total 1, got %d", response.Total)
 			}
@@ -370,7 +371,6 @@ func TestCatalogHandler_ListCatalog_Integration(t *testing.T) {
 }
 
 func TestCatalogHandler_ListCatalog_PaginationLogic(t *testing.T) {
-	// Create a larger dataset to test pagination properly
 	var mockProducts []models.Product
 	for i := 1; i <= 25; i++ {
 		mockProducts = append(
@@ -455,7 +455,7 @@ func TestCatalogHandler_ListCatalog_PaginationLogic(t *testing.T) {
 					t.Fatalf("Expected status 200, got %d", rr.Code)
 				}
 
-				var response Response
+				var response ListCatalogResponse
 				err := json.Unmarshal(rr.Body.Bytes(), &response)
 				if err != nil {
 					t.Fatalf("Failed to unmarshal response: %v", err)
@@ -488,7 +488,6 @@ func TestCatalogHandler_ListCatalog_PaginationLogic(t *testing.T) {
 }
 
 func TestCatalogHandler_ListCatalog_CategoryFilter(t *testing.T) {
-	// Test data with different categories
 	mockProducts := []models.Product{
 		{
 			Code:  "CLOTHING001",
@@ -526,13 +525,12 @@ func TestCatalogHandler_ListCatalog_CategoryFilter(t *testing.T) {
 				t.Fatalf("Expected status 200, got %d", rr.Code)
 			}
 
-			var response Response
+			var response ListCatalogResponse
 			err := json.Unmarshal(rr.Body.Bytes(), &response)
 			if err != nil {
 				t.Fatalf("Failed to unmarshal response: %v", err)
 			}
 
-			// Since mock doesn't filter, we just verify the request was processed correctly
 			if len(response.Products) != 2 {
 				t.Errorf("Expected 2 products, got %d", len(response.Products))
 			}
@@ -541,7 +539,6 @@ func TestCatalogHandler_ListCatalog_CategoryFilter(t *testing.T) {
 }
 
 func TestCatalogHandler_ListCatalog_PriceFilter(t *testing.T) {
-	// Test data with different prices
 	mockProducts := []models.Product{
 		{
 			Code:  "CHEAP001",
@@ -579,13 +576,12 @@ func TestCatalogHandler_ListCatalog_PriceFilter(t *testing.T) {
 				t.Fatalf("Expected status 200, got %d", rr.Code)
 			}
 
-			var response Response
+			var response ListCatalogResponse
 			err := json.Unmarshal(rr.Body.Bytes(), &response)
 			if err != nil {
 				t.Fatalf("Failed to unmarshal response: %v", err)
 			}
 
-			// Since mock doesn't filter, we just verify the request was processed correctly
 			if len(response.Products) != 2 {
 				t.Errorf("Expected 2 products, got %d", len(response.Products))
 			}
