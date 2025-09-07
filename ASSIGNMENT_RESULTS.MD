@@ -75,7 +75,7 @@ Federico Bau -- Assignment Results
 
 * PR: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/5
 * Branch: [solution/assignment-1/e-product-detail-endpoint](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/e-product-detail-endpoint)
-* Task: Fourth Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Product details endpoint
+* Task: Fifth Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Product details endpoint
 
 #### Change Log
 
@@ -135,3 +135,14 @@ Response:
   ]
 }
 ```
+
+
+### 6) Assignment 1-F: Categories endpoint CRUD
+
+* PR: 
+* Branch: [solution/assignment-1/f-category-crud]()
+* Task: Sixth Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Categories endpoint CRUD
+
+#### Change Log
+
+* Moved structured used by handlers into `dto` package
