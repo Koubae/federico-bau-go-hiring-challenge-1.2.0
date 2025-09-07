@@ -6,6 +6,14 @@ This repository contains a Go application for managing products and their prices
 * **Final Assignment Branch:** https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/federico-bau-assignment
 * Author: [Federico Bau](https://federicobau.dev/)
 
+### Branches
+
+* **Final Assignment Branch:** https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/federico-bau-assignment
+  * [solution/assignment-1-implementation](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1-implementation): 
+    Main branch with the final assignment implementation implementing what's been requested in [ASSIGNMENT.md](./ASSIGNMENT.md)
+    * [solution/assignment-1/a-refactor-product-repository](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/a-refactor-product-repository)
+      First Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Catalog endpoint
+
 
 ## Project Structure
 
