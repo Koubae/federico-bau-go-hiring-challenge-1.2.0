@@ -34,7 +34,7 @@ func NewCatalogHandler(r interfaces.ProductsRepository) *CatalogHandler {
 	}
 }
 
-func (h *CatalogHandler) HandleGet(w http.ResponseWriter, r *http.Request) {
+func (h *CatalogHandler) ListCatalog(w http.ResponseWriter, r *http.Request) {
 	pagination, err := api.PaginationRequest(r)
 	if err != nil {
 		api.ErrorResponse(w, http.StatusBadRequest, "Pagination validation failure: "+err.Error())

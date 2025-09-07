@@ -89,7 +89,7 @@ func TestNewCatalogHandler(t *testing.T) {
 	}
 }
 
-func TestCatalogHandler_HandleGet(t *testing.T) {
+func TestCatalogHandler_ListCatalog(t *testing.T) {
 	// Test data setup
 	mockProducts := []models.Product{
 		{
@@ -255,11 +255,11 @@ func TestCatalogHandler_HandleGet(t *testing.T) {
 				rr := httptest.NewRecorder()
 
 				// Execute handler
-				handler.HandleGet(rr, req)
+				handler.ListCatalog(rr, req)
 
 				// Check status code
 				if rr.Code != tt.expectedStatus {
-					t.Errorf("HandleGet() status = %v, want %v", rr.Code, tt.expectedStatus)
+					t.Errorf("ListCatalog() status = %v, want %v", rr.Code, tt.expectedStatus)
 				}
 
 				// Check response body if needed
@@ -272,7 +272,7 @@ func TestCatalogHandler_HandleGet(t *testing.T) {
 
 					expectedResponse := tt.expectedBody.(Response)
 					if !reflect.DeepEqual(response, expectedResponse) {
-						t.Errorf("HandleGet() response = %v, want %v", response, expectedResponse)
+						t.Errorf("ListCatalog() response = %v, want %v", response, expectedResponse)
 					}
 				}
 
@@ -290,7 +290,7 @@ func TestCatalogHandler_HandleGet(t *testing.T) {
 	}
 }
 
-func TestCatalogHandler_HandleGet_Integration(t *testing.T) {
+func TestCatalogHandler_ListCatalog_Integration(t *testing.T) {
 	// This test focuses on the integration aspects and edge cases
 	mockRepo := &mockProductsRepository{
 		products: []models.Product{
@@ -313,7 +313,7 @@ func TestCatalogHandler_HandleGet_Integration(t *testing.T) {
 			req := httptest.NewRequest("GET", "/catalog", nil)
 			rr := httptest.NewRecorder()
 
-			handler.HandleGet(rr, req)
+			handler.ListCatalog(rr, req)
 
 			contentType := rr.Header().Get("Content-Type")
 			if contentType != "application/json" {
@@ -327,7 +327,7 @@ func TestCatalogHandler_HandleGet_Integration(t *testing.T) {
 			req := httptest.NewRequest("GET", "/catalog", nil)
 			rr := httptest.NewRecorder()
 
-			handler.HandleGet(rr, req)
+			handler.ListCatalog(rr, req)
 
 			if rr.Code != http.StatusOK {
 				t.Fatalf("Expected status 200, got %d", rr.Code)
@@ -369,7 +369,7 @@ func TestCatalogHandler_HandleGet_Integration(t *testing.T) {
 
 }
 
-func TestCatalogHandler_HandleGet_PaginationLogic(t *testing.T) {
+func TestCatalogHandler_ListCatalog_PaginationLogic(t *testing.T) {
 	// Create a larger dataset to test pagination properly
 	var mockProducts []models.Product
 	for i := 1; i <= 25; i++ {
@@ -449,7 +449,7 @@ func TestCatalogHandler_HandleGet_PaginationLogic(t *testing.T) {
 				req := httptest.NewRequest("GET", "/catalog"+tt.queryParams, nil)
 				rr := httptest.NewRecorder()
 
-				handler.HandleGet(rr, req)
+				handler.ListCatalog(rr, req)
 
 				if rr.Code != http.StatusOK {
 					t.Fatalf("Expected status 200, got %d", rr.Code)
@@ -487,7 +487,7 @@ func TestCatalogHandler_HandleGet_PaginationLogic(t *testing.T) {
 	}
 }
 
-func TestCatalogHandler_HandleGet_CategoryFilter(t *testing.T) {
+func TestCatalogHandler_ListCatalog_CategoryFilter(t *testing.T) {
 	// Test data with different categories
 	mockProducts := []models.Product{
 		{
@@ -520,7 +520,7 @@ func TestCatalogHandler_HandleGet_CategoryFilter(t *testing.T) {
 			req := httptest.NewRequest("GET", "/catalog?category=Clothing", nil)
 			rr := httptest.NewRecorder()
 
-			handler.HandleGet(rr, req)
+			handler.ListCatalog(rr, req)
 
 			if rr.Code != http.StatusOK {
 				t.Fatalf("Expected status 200, got %d", rr.Code)
@@ -540,7 +540,7 @@ func TestCatalogHandler_HandleGet_CategoryFilter(t *testing.T) {
 	)
 }
 
-func TestCatalogHandler_HandleGet_PriceFilter(t *testing.T) {
+func TestCatalogHandler_ListCatalog_PriceFilter(t *testing.T) {
 	// Test data with different prices
 	mockProducts := []models.Product{
 		{
@@ -573,7 +573,7 @@ func TestCatalogHandler_HandleGet_PriceFilter(t *testing.T) {
 			req := httptest.NewRequest("GET", "/catalog?priceLessThen=100.00", nil)
 			rr := httptest.NewRecorder()
 
-			handler.HandleGet(rr, req)
+			handler.ListCatalog(rr, req)
 
 			if rr.Code != http.StatusOK {
 				t.Fatalf("Expected status 200, got %d", rr.Code)

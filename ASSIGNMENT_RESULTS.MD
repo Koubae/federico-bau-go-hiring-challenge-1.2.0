@@ -60,7 +60,7 @@ Federico Bau -- Assignment Results
 * Fixed Api tests by fixing `OKResponse` and `ErrorResponse`. also added them in Handler
 * Added `RecoverPanic` and `LogAccessMiddleware` middlewares
 
-### 3) Assignment 1-D: Catalog Endpoint query by category and price
+### 4) Assignment 1-D: Catalog Endpoint query by category and price
 
 * PR: https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/pull/4
 * Branch: [solution/assignment-1/d-catalog-endpoint-query-by-category-and-price](https://github.com/Koubae/federico-bau-go-hiring-challenge-1.2.0/tree/solution/assignment-1/d-catalog-endpoint-query-by-category-and-price)
@@ -71,3 +71,12 @@ Federico Bau -- Assignment Results
 * Added category and price query to handler and repository
 
 
+### 5) Assignment 1-E: Product details endpoint
+
+* PR: 
+* Branch: [solution/assignment-1/e-product-detail-endpoint]()
+* Task: Fourth Task of [ASSIGNMENT.md](./ASSIGNMENT.md)'s Product details endpoint
+
+#### Change Log
+
+* Renamed Catalog Handler `HandleGet` --> `ListCatalog`
