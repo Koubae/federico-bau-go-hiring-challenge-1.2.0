@@ -1,14 +1,14 @@
 package models
 
 import (
-	"gorm.io/gorm"
+	"github.com/mytheresa/go-hiring-challenge/app/database"
 )
 
 type ProductsRepository struct {
-	db *gorm.DB
+	db *database.Client
 }
 
-func NewProductsRepository(db *gorm.DB) *ProductsRepository {
+func NewProductsRepository(db *database.Client) *ProductsRepository {
 	return &ProductsRepository{
 		db: db,
 	}
@@ -16,7 +16,7 @@ func NewProductsRepository(db *gorm.DB) *ProductsRepository {
 
 func (r *ProductsRepository) GetAllProducts() ([]Product, error) {
 	var products []Product
-	if err := r.db.Preload("Variants").Find(&products).Error; err != nil {
+	if err := r.db.DB.Preload("Variants").Find(&products).Error; err != nil {
 		return nil, err
 	}
 	return products, nil

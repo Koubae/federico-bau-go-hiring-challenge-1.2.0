@@ -29,7 +29,7 @@ func main() {
 	defer container.ShutDown()
 
 	// Initialize handlers
-	prodRepo := models.NewProductsRepository(container.Container.DB.DB) // TODO
+	prodRepo := models.NewProductsRepository(container.Container.DB) // TODO
 	cat := catalog.NewCatalogHandler(prodRepo)
 
 	// Set up routing
